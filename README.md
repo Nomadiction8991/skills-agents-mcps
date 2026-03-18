@@ -18,4 +18,4 @@ Para instalar e configurar o ambiente, use o guia em:
 
 - [`INSTALL.md`](./INSTALL.md)
 
-Esse arquivo contém os pré-requisitos e os métodos de configuração para Linux (bash) e Windows (PowerShell). No momento, o guia está focado na unificação de skills.
+Esse arquivo contém os pré-requisitos e o método recomendado para usar este repositório com várias CLIs, independentemente de onde ele foi clonado.
