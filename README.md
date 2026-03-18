@@ -1,10 +1,10 @@
-# Skills
+# Skills, Agents e MCPs
 
-Repositório para armazenar e evoluir skills que eu e os colaboradores consideramos importantes para facilitar o dia a dia de desenvolvimento.
+Este repositório serve para armazenar e evoluir skills, agents e MCPs que ajudam no trabalho do dia a dia.
 
 ## Intenção do projeto
 
-Este projeto centraliza skills reutilizáveis para CLIs de IA (como `claude`, `codex` e `copilot`), com foco em:
+Este projeto centraliza skills, agents e MCPs reutilizáveis para apoiar fluxos de trabalho com IA no dia a dia, com foco em:
 
 - reduzir tarefas repetitivas;
 - padronizar fluxos de trabalho úteis no time;
@@ -18,5 +18,4 @@ Para instalar e configurar o ambiente, use o guia em:
 
 - [`INSTALL.md`](./INSTALL.md)
 
-Esse arquivo contém os pré-requisitos e os métodos de configuração para Linux (bash) e Windows (PowerShell), incluindo a unificação de skills.
-
+Esse arquivo contém os pré-requisitos e os métodos de configuração para Linux (bash) e Windows (PowerShell). No momento, o guia está focado na unificação de skills.
