@@ -1,21 +1,46 @@
-# Skills, Agents e MCPs
+# skills-agents-mcps
 
-Este repositório serve para armazenar e evoluir skills, agents e MCPs que ajudam no trabalho do dia a dia.
+Repositorio de skills compartilhadas para `Codex`, `Claude` e `Copilot`.
 
-## Intenção do projeto
+## Finalidade
 
-Este projeto centraliza skills, agents e MCPs reutilizáveis para apoiar fluxos de trabalho com IA no dia a dia, com foco em:
+Centralizar skills reutilizaveis em um unico lugar para reduzir prompt repetido e manter o mesmo conjunto de instrucoes entre CLIs.
 
-- reduzir tarefas repetitivas;
-- padronizar fluxos de trabalho úteis no time;
-- acelerar onboarding e execução de tarefas comuns;
-- manter boas práticas em um único lugar.
+## Para quem serve
 
+Para quem usa ou mantem skills nessas CLIs.
 
-## Instalação
+## Tipo e estado
 
-Para instalar e configurar o ambiente, use o guia em:
+Repositorio operacional de skills. Hoje o conteudo visivel e focado em `Skills/` e no fluxo de instalacao compartilhada. Nao ha `agents` ou `MCPs` estruturados como parte ativa deste repositorio.
 
-- [`INSTALL.md`](./INSTALL.md)
+## Stack
 
-Esse arquivo contém os pré-requisitos e o método recomendado para usar este repositório com várias CLIs, independentemente de onde ele foi clonado.
+- `Markdown` para skills e documentacao.
+- `bash` e `PowerShell` no fluxo de instalacao.
+
+## Integracoes e MCPs
+
+- Uso compartilhado com `Codex`, `Claude` e `Copilot`.
+- MCPs estruturados: nenhum no estado atual.
+
+## O que existe hoje
+
+- `iniciar-projeto`
+- `instalar-skills-agents-mcps`
+- `napkin`
+- `php-pro`
+
+## Estrutura
+
+```text
+Skills/
+├── iniciar-projeto/
+├── instalar-skills-agents-mcps/
+├── napkin/
+└── php-pro/
+```
+
+## Instalacao
+
+O fluxo recomendado esta em [`INSTALL.md`](./INSTALL.md).

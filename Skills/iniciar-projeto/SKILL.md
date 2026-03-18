@@ -1,372 +1,222 @@
 ---
 name: iniciar-projeto
-description: "DISCOVERY + AUTHORING SKILL - Entende o contexto de projetos novos ou pouco documentados a partir do que existir no repositorio, faz perguntas quando faltar base e gera ou revisa um `README.md` inicial rico, tecnico e confiavel."
+description: "Gerar ou revisar um `README.md` curto, direto e confiavel para projeto em andamento ou ainda nao iniciado. Usar para README inicial, onboarding de repositorio e documentacao de projeto pouco documentado, ignorando caminhos cobertos por `.gitignore`, perguntando ao usuario apenas o que o repositorio nao responder com seguranca, e mantendo `CLAUDE.md`, `AGENTS.md` e `instructions.md` como links simbolicos para `README.md` quando faltarem."
 ---
 
 # Iniciar Projeto
 
-Use esta skill quando o pedido envolver iniciar um projeto, documentar um repositorio novo, gerar um `README.md` do zero, destravar um projeto vazio ou montar a primeira explicacao consistente do sistema a partir dos sinais disponiveis.
-
-Gatilhos comuns:
-
-- `iniciar projeto`
-- `projeto novo`
-- `repositorio vazio`
-- `README inicial`
-- `README`
-- `documentacao do repositorio`
-- `documentacao interna`
-- `estrutura do projeto`
-- `onboarding`
-- `project overview`
-
-## Perfil
-
-- Dominio: descoberta de contexto e documentacao tecnica
-- Lingua da skill: pt-BR
-- Papel: analista, entrevistador e redator tecnico
-- Ambito: descoberta guiada + geracao e refino de `README.md`
-- Saida: markdown
-
 ## Objetivo
 
-Descobrir o contexto de um projeto e produzir um `README.md` completo, claro e confiavel a partir da documentacao disponivel, da estrutura do codigo, dos arquivos de configuracao e, quando necessario, das respostas fornecidas pelo usuario.
+Tratar `README.md` como documento central do repositorio.
 
-Esta skill deve saber parar, perguntar e so depois escrever quando o repositorio estiver vazio, o projeto for novo ou as evidencias forem insuficientes.
+Descobrir o maximo possivel pelo proprio codigo e escrever um `README.md` curto, util e confiavel. Perguntar ao usuario so no fim da descoberta, e apenas sobre lacunas essenciais.
 
-O foco e fazer com que uma pessoa nova no repositorio consiga entender com rapidez:
+## Perguntas que a IA deve responder primeiro
 
-- o que o projeto faz;
-- para que ele existe;
-- onde ele se encaixa no contexto do produto ou negocio, quando isso puder ser deduzido com seguranca;
-- qual arquitetura aparenta adotar;
-- quais tecnologias realmente compoem a solucao, como `PHP`, `HTML`, `CSS`, `JavaScript`, banco de dados e ferramentas de build;
-- como instalar, executar, testar e contribuir.
-
-## Quando interromper e perguntar ao usuario
-
-Faca perguntas antes de gerar o `README` quando ocorrer qualquer uma destas condicoes:
-
-- o repositorio estiver praticamente vazio;
-- houver apenas `.gitignore`, `README.md` vazio, arquivos de configuracao minimos ou nenhuma base de codigo;
-- o projeto parecer novo e ainda sem definicao clara de stack, finalidade ou arquitetura;
-- existir pouca evidencia para deduzir o que o software faz;
-- houver conflito forte entre documentacao, codigo e estrutura;
-- faltar informacao essencial que nao possa ser deduzida com seguranca.
-
-Considere o repositorio "novo" ou "vazio" quando houver um ou mais destes sinais:
-
-- ausencia de codigo-fonte relevante;
-- ausencia de manifestos principais ou de dependencias instaladas;
-- ausencia de documentacao orientadora ou instrucoes de projeto;
-- estrutura minima ainda sem modulos, rotas, telas, servicos ou testes;
-- documentacao existente sem contexto suficiente para identificar o produto.
+Antes de escrever ou perguntar qualquer coisa, tentar responder sozinha:
 
-Nesses casos, nao tente adivinhar cedo demais. Pergunte primeiro.
-
-## Fontes primarias
+- o que o projeto e;
+- para que serve;
+- para quem serve;
+- que tipo de sistema ele e;
+- em que estado ele esta;
+- o que ja existe e o que ainda falta;
+- qual stack usa ou pretende usar;
+- como e usado, instalado, executado ou publicado;
+- quais integracoes, agents ou MCPs existem;
+- o que esta fora de escopo, quando isso for importante.
 
-Procure e priorize evidencias nesta ordem:
+Se alguma dessas respostas nao puder ser sustentada pelo repositorio, perguntar ao usuario apenas os itens em aberto.
 
-1. Arquivos dentro de `.github/copilot/`, incluindo materiais como:
-   - `Architecture`
-   - `Code_Exemplars`
-   - `Coding_Standards`
-   - `Project_Folder_Structure`
-   - `Technology_Stack`
-   - `Unit_Tests`
-   - `Workflow_Analysis`
-2. Arquivos de instrucoes do Copilot, nesta ordem de preferencia:
-   - `.github/copilot-instructions.md`
-   - `.github/copilot/copilot-instructions.md`
-   - `.github/instructions/copilot-instructions.md`
+## Regras centrais
 
-Se as fontes primarias estiverem incompletas, use apenas como apoio complementar:
+- Ler `.gitignore` antes da descoberta e ignorar esses caminhos como exclusao dura.
+- Reaproveitar o `README.md` atual quando ele tiver fatos validos.
+- Inferir apenas a partir de sinais tecnicos fortes.
+- Fazer o `README.md` responder as perguntas centrais de descoberta, nao apenas preencher secoes genericas.
+- Nao citar no `README.md` nada que esteja coberto por `.gitignore`.
+- Escrever o minimo util, sem floreio, marketing ou formalidade.
+- Criar aliases de documentacao por link simbolico, nunca por copia.
 
-- `README.md` atual
-- arquivos de manifesto como `package.json`, `pyproject.toml`, `composer.json`, `Cargo.toml`, `go.mod`
-- `Dockerfile`, `Makefile`, CI e scripts de setup
-- arquivos de licenca como `LICENSE`
+## Contexto a consultar
 
-Se nem as fontes primarias nem os sinais do repositorio forem suficientes, mude para modo de descoberta e pergunte ao usuario o que falta.
+Usar nesta ordem:
 
-## Fontes de inferencia segura
+1. `.gitignore`, se existir.
+2. `README.md`, se existir.
+3. `.github/copilot/`.
+4. `.github/copilot-instructions.md`, `.github/copilot/copilot-instructions.md`, `.github/instructions/copilot-instructions.md`.
+5. Manifestos, setup e automacao: `package.json`, `pyproject.toml`, `composer.json`, `Cargo.toml`, `go.mod`, `Makefile`, `Dockerfile*`, CI e scripts.
+6. Estrutura visivel do repositorio: pastas, entrypoints, rotas, controllers, services, templates, migrations, testes, assets fora do filtro de `.gitignore`.
+7. `LICENSE` e documentacao complementar fora do filtro de `.gitignore`.
 
-Quando a documentacao nao explicar bem o projeto, deduza informacoes apenas a partir de sinais tecnicos concretos do repositorio, por exemplo:
+## Fluxo
 
-- extensoes e distribuicao de arquivos como `.php`, `.blade.php`, `.html`, `.css`, `.scss`, `.js`, `.ts`, `.vue`, `.jsx`, `.tsx`
-- frameworks e libs declarados em manifestos e lockfiles
-- estrutura de pastas como `app/`, `src/`, `templates/`, `resources/views/`, `public/`, `routes/`, `assets/`, `tests/`
-- nomes de modulos, controllers, services, commands, jobs, entities, migrations e componentes
-- arquivos de entrada e bootstrap como `index.php`, `artisan`, `bin/console`, `main.ts`, `vite.config.*`, `webpack.config.*`
-- pipelines de CI, comandos de build, scripts de teste e automacao
-- configuracoes de banco, fila, cache, Docker, nginx, Apache ou deploy
+1. Ler `.gitignore` e montar o filtro da descoberta.
+2. Tratar caminhos cobertos por `.gitignore` como invisiveis para a descoberta, mesmo que estejam versionados no Git.
+3. Inspecionar o repositorio visivel depois desse filtro.
+4. Responder internamente a lista de perguntas centrais da skill.
+5. Consolidar fatos sobre objetivo, stack, arquitetura, setup e contribuicao.
+6. Decidir se ja ha base suficiente para escrever o `README.md`.
+7. Se faltar contexto, usar o banco de perguntas desta skill e perguntar apenas o que continua em aberto.
+8. Gerar ou revisar `README.md`.
+9. Criar `CLAUDE.md`, `AGENTS.md` e `instructions.md` como links simbolicos para `README.md` se estiverem ausentes.
 
-Esses sinais permitem inferencias fortes como:
+## Regra do filtro
 
-- se o projeto e uma aplicacao web, API, painel administrativo, biblioteca, pacote interno ou servico backend;
-- se usa `PHP` no backend e `HTML`/`CSS` no frontend;
-- se ha renderizacao server-side, templates, SPA ou assets estaticos;
-- se a arquitetura parece MVC, modular, monolitica, orientada a servicos ou em camadas;
-- quem aparenta ser o publico principal: usuarios finais, equipe interna, integradores ou desenvolvedores.
+Se um caminho bater em `.gitignore`, ele e seus descendentes saem da descoberta.
 
-Nao invente fatos ausentes das fontes. Se uma informacao importante nao puder ser confirmada nem deduzida com seguranca, omita do `README` ou sinalize a lacuna fora do arquivo final.
+Isso vale mesmo quando:
 
-## Perguntas obrigatorias quando faltar contexto
+- o arquivo estiver versionado no Git;
+- houver referencias a ele em `git status`;
+- a pasta existir fisicamente no repositorio.
 
-Quando precisar perguntar, faca perguntas curtas, diretas e em texto simples. Pergunte apenas o que estiver faltando, mas cubra pelo menos os pontos essenciais abaixo em projetos novos ou vazios:
+Conteudo excluido por `.gitignore` nao pode ser usado para:
 
-1. Qual problema este projeto vai resolver?
-2. Para quem ele esta sendo feito?
-3. Que tipo de projeto e esse: site, painel, API, ecommerce, automacao, biblioteca, app interno ou outro?
-4. Quais tecnologias pretende usar no backend e no frontend, por exemplo `PHP`, `HTML`, `CSS`, `JavaScript`, banco de dados e framework?
-5. Ha alguma preferencia de arquitetura, como MVC, camadas, modular ou API separada?
-6. Como o projeto devera ser executado ou publicado?
-7. Existe alguma integracao externa importante?
-8. Em que idioma o `README` deve ser escrito?
+- inferir stack;
+- listar modulos, skills, agents ou MCPs;
+- descrever estrutura;
+- sustentar exemplos ou fluxo de uso.
 
-Se o usuario ja tiver respondido parte disso, faca apenas perguntas complementares.
+## Como decidir perguntas
+
+- Primeiro tentar responder internamente a lista de perguntas centrais da skill.
+- Projeto em andamento: extrair o maximo possivel do repositorio e perguntar apenas sobre lacunas reais.
+- Projeto ainda nao iniciado: confirmar cedo que faltam evidencias e perguntar sobre problema, publico, tipo de sistema, primeira entrega, stack e operacao.
+- Primeira rodada: 4 a 6 perguntas nucleares.
+- Segunda rodada: apenas o complemento estritamente necessario.
+
+Perguntar apenas quando faltar, por exemplo:
+
+- problema que o projeto resolve;
+- para quem ele existe;
+- tipo de sistema;
+- estado atual ou primeira entrega;
+- stack pretendida;
+- forma de execucao, deploy ou distribuicao;
+- integracoes externas;
+- escopo, fora de escopo ou criterio de sucesso;
+- idioma do `README.md`.
 
-## Fluxo de trabalho do nucleo
+## Banco de perguntas
 
-1. Detecte se o projeto esta vazio ou mal definido.
-   Verifique se ha codigo, manifestos, documentacao, estrutura funcional e sinais suficientes para deducao.
-2. Pergunte ao usuario quando faltar base.
-   Se o projeto for novo, vazio ou ambiguo, faca perguntas essenciais antes de escrever o `README`.
-3. Mapeie as fontes disponiveis.
-   Liste os arquivos relevantes encontrados em `.github/copilot` e identifique qual variante de `copilot-instructions.md` existe.
-4. Extraia evidencias por topico.
-   Organize mentalmente ou em notas curtas o que cada fonte informa sobre nome do projeto, objetivo, stack, arquitetura, setup, fluxo de desenvolvimento, testes e contribuicao.
-5. Inspecione o repositorio para inferencia segura.
-   Use manifestos, estrutura de pastas, entrypoints, tipos de arquivos e nomes de modulos para inferir finalidade, dominio, arquitetura e stack real do projeto.
-6. Resolva lacunas com apoio minimo.
-   Complete versoes, comandos, tecnologias e contexto de uso com manifestos e scripts do repositorio somente quando as fontes primarias nao bastarem.
-7. Estruture o `README` para onboarding.
-   Priorize clareza, navegacao facil, instalacao rapida e contexto suficiente para desenvolvimento.
-8. Escreva com rastreabilidade.
-   Cada secao precisa refletir evidencias concretas ou inferencias fortes baseadas no codigo; nao use texto generico que poderia servir para qualquer repositorio.
-9. Revise antes de entregar.
-   Remova repeticoes, placeholders, marketing vazio e afirmacoes sem respaldo documental.
+Usar so para o que o repositorio nao respondeu com seguranca.
 
-## Estrutura recomendada do README
+### Perguntas nucleares
 
-Use estas secoes como padrao. Adapte a ordem ou remova apenas quando nao houver base suficiente.
+Comecar pelas mais relevantes:
 
-### 1. Nome do projeto e descricao
+1. Qual problema este projeto resolve?
+2. Quem vai usar ou se beneficiar dele?
+3. Que tipo de sistema e esse: site, painel, API, automacao, ecommerce, app interno, biblioteca ou outro?
+4. O que ja existe hoje e o que ainda falta?
+5. Qual e a primeira entrega esperada?
+6. Quais tecnologias ou ferramentas pretende usar?
+7. Como isso deve ser executado, publicado ou distribuido?
+8. Em que idioma o `README.md` deve ser escrito?
 
-- Extraia o nome oficial do projeto ou repositorio.
-- Resuma o proposito principal em 1 ou 2 paragrafos curtos.
-- Explique o problema que o projeto resolve e para quem ele existe, sem linguagem promocional.
-- Se a documentacao nao disser claramente a finalidade, deduza pelo dominio exposto em nomes de classes, rotas, modulos, telas e integracoes.
+### Se o projeto ja esta em andamento
 
-### 2. Finalidade e uso esperado
+Perguntar apenas o que o codigo nao deixar claro:
 
-- Explique por que o projeto provavelmente existe e em que contexto ele deve ser usado.
-- Diferencie, quando possivel, se ele serve para produto final, operacao interna, integracao, automacao, CMS, painel administrativo, e-commerce, API ou biblioteca.
-- Se o repositorio indicar publico-alvo, registre para quem ele foi feito: usuarios finais, clientes, equipe interna ou outros desenvolvedores.
-
-### 3. Stack de tecnologia
-
-- Liste linguagens, frameworks, ferramentas, banco de dados, infraestrutura e runtime.
-- Inclua versoes somente quando confirmadas.
-- Priorize o arquivo `Technology_Stack`.
-- Quando a documentacao nao listar tudo, detecte tecnologias pelo codigo e pelos manifestos.
-- Deixe explicito no texto quando o stack combina backend, frontend e tooling, por exemplo `PHP` no servidor, templates `HTML`, estilos em `CSS` ou `SCSS` e assets em `JavaScript`.
-
-### 4. Arquitetura
-
-- Descreva a arquitetura em alto nivel.
-- Explique modulos, camadas, servicos ou fluxos importantes.
-- Se a documentacao for fraca, deduza a arquitetura pela organizacao das pastas e responsabilidades do codigo.
-- Inclua um diagrama simples em ASCII ou Mermaid apenas se a documentacao ou a estrutura observada realmente suportarem isso.
-
-### 5. Getting Started
-
-- Liste pre-requisitos.
-- Inclua passos de instalacao e configuracao.
-- Adicione comandos reais para rodar o projeto, setup inicial, seeds, migrations ou dev server quando existirem.
-
-### 6. Estrutura do projeto
-
-- Resuma a organizacao de pastas e os diretorios principais.
-- Priorize `Project_Folder_Structure`.
-- Use bloco de codigo apenas quando a arvore fizer diferenca para entendimento.
-
-### 7. Funcionalidades principais
-
-- Destaque as capacidades centrais do projeto.
-- Consolide informacoes vindas de varias fontes sem duplicar secoes anteriores.
-
-### 8. Fluxo de desenvolvimento
-
-- Resuma branch strategy, code review, deploy flow, ambientes ou rotina de trabalho quando documentados.
-- Priorize `Workflow_Analysis`.
-
-### 9. Padroes de codigo
-
-- Resuma convencoes de estilo, arquitetura, nomenclatura, lint, formatacao e criterios de qualidade.
-- Priorize `Coding_Standards`.
-
-### 10. Testes
-
-- Explique a estrategia de testes, ferramentas usadas e como executar a suite.
-- Priorize `Unit_Tests`.
-
-### 11. Contribuicao
-
-- Oriente como contribuir com clareza.
-- Referencie `Code_Exemplars` e `copilot-instructions.md` quando eles trouxerem expectativas praticas.
-
-### 12. Licenca
-
-- Inclua a licenca somente se ela estiver explicitamente documentada ou presente em `LICENSE`.
-
-## Regras de composicao
-
-- Prefira markdown limpo e escaneavel.
-- Use headings claros e hierarquia consistente.
-- Use listas apenas quando elas melhorarem leitura.
-- Use blocos de codigo para comandos, configuracoes e exemplos de estrutura.
-- Inclua links relativos para documentacao relevante quando isso ajudar a navegacao.
-- Adicione badges apenas quando houver dados concretos para construir o badge com seguranca.
-- Mantenha o texto conciso: informativo para quem chega agora, sem transformar o `README` em manual completo.
-
-## Deve fazer
-
-- Detectar cedo se o projeto esta vazio, novo ou ambiguo.
-- Fazer perguntas objetivas ao usuario quando nao houver base suficiente para deducao segura.
-- Priorizar fontes de `.github/copilot` antes de qualquer inferencia.
-- Fazer inferencias apenas quando houver sinais tecnicos fortes e coerentes.
-- Preservar termos tecnicos do projeto como nomes de modulos, servicos e scripts reais.
-- Ajustar a lingua do `README` a partir da lingua predominante do repositorio; se nao houver sinal forte, use a lingua pedida pelo usuario.
-- Incluir comandos executaveis e realistas.
-- Explicar a finalidade do projeto e o contexto de uso sempre que isso puder ser deduzido com seguranca.
-- Identificar e registrar as tecnologias observadas no codigo, mesmo quando a documentacao estiver incompleta.
-- Tornar explicito o caminho para setup, testes e contribuicao.
-- Referenciar documentacao complementar quando ela agregue contexto util.
-
-## Nao deve fazer
-
-- Gerar um `README` completo para projeto vazio sem antes perguntar nada ao usuario.
-- Inventar arquitetura, fluxo de trabalho, cobertura de testes ou licenca.
-- Confundir suposicao fraca com deducao tecnica forte.
-- Adicionar badges falsos ou placeholders.
-- Repetir o mesmo conteudo em secoes diferentes.
-- Escrever textos vagos como "projeto escalavel e robusto" sem evidencias.
-- Copiar integralmente documentacao interna longa para dentro do `README`.
-- Exigir secoes vazias apenas para seguir um molde.
-
-## Tratamento de lacunas e conflitos
-
-- Se arquivos divergirem, priorize a fonte mais especifica e mais recente que puder ser identificada.
-- Se o projeto estiver novo ou vazio, interrompa a escrita e faca perguntas de descoberta primeiro.
-- Se uma secao essencial estiver parcialmente documentada, use apoio em manifestos e scripts para completar o minimo necessario.
-- Se a finalidade ou arquitetura nao estiverem escritas, deduza a partir do comportamento implicado pela estrutura do projeto e pelas tecnologias presentes.
-- Se ainda assim faltar evidencia, pergunte ao usuario; se nao houver resposta, omita a afirmacao do `README` e reporte a lacuna fora do arquivo final.
-- Se o repositorio ja tiver um `README.md`, preserve informacoes validas e melhore estrutura, precisao e legibilidade em vez de reescrever sem necessidade.
-
-## Heuristicas uteis de deducao
-
-Use heuristicas simples e defensaveis:
-
-- `composer.json` + `app/Http/Controllers` + `resources/views` sugere aplicacao web em `PHP`, possivelmente com MVC e renderizacao server-side.
-- `routes/api.php` ou controllers dedicados a API sugerem backend HTTP para integracoes ou frontend separado.
-- `public/`, `assets/`, `.css`, `.scss`, `.blade.php`, `.twig` ou `.html` indicam camada de apresentacao e assets visuais.
-- `package.json`, `vite.config.*`, `webpack.config.*` ou `tailwind.config.*` indicam pipeline frontend complementar.
-- `database/migrations`, `schema.sql` ou ORM configurado sugerem persistencia relacional.
-- `Dockerfile`, `docker-compose.*`, `nginx.conf` ou CI com build/test ajudam a descrever ambiente e operacao.
-
-Quando usar essas heuristicas, transforme-as em texto objetivo e especifico ao repositorio, nunca em afirmacoes genericas.
-
-## Modelo de saida esperado
-
-Quando gerar um `README.md`, entregue algo proximo desta espinha dorsal:
-
-````md
-# <Nome do Projeto>
-
-<Descricao curta e objetiva do projeto.>
-
-## Finalidade
-
-<Por que o projeto existe, para quem ele serve e em que contexto deve ser usado.>
-
-## Stack de Tecnologia
-
-- ...
-
-## Arquitetura
-
-<Visao geral da arquitetura.>
-
-## Getting Started
-
-### Pre-requisitos
-
-- ...
-
-### Instalacao
-
-```bash
-<comandos reais>
-```
-
-### Configuracao
-
-<passos necessarios>
-
-## Estrutura do Projeto
-
-```text
-<arvore opcional>
-```
-
-## Funcionalidades Principais
-
-- ...
-
-## Fluxo de Desenvolvimento
-
-<resumo pratico>
-
-## Padroes de Codigo
-
-- ...
-
-## Testes
-
-```bash
-<comandos reais de teste>
-```
-
-## Contribuindo
-
-<instrucoes objetivas>
-
-## Licenca
-
-<licenca, se confirmada>
-````
-
-## Checklist de qualidade
-
-Antes de concluir, confirme:
-
-- O `README` explica o que o projeto faz sem depender de contexto externo.
-- O `README` deixa clara a finalidade do projeto e por que ele e usado, quando isso for dedutivel.
-- A arquitetura descrita bate com a documentacao ou com a estrutura observada do codigo.
-- As tecnologias citadas refletem o que realmente aparece no repositorio, como `PHP`, `HTML`, `CSS`, `JavaScript` e ferramentas auxiliares.
-- Os comandos mostrados existem ou sao compativeis com os artefatos do repositorio.
-- Nenhuma secao importante ficou genrica ou inventada.
-- A ordem das secoes favorece onboarding.
-- As referencias para documentacao complementar estao corretas.
-
-## Resposta esperada ao usuario
-
-Ao finalizar uma tarefa com esta skill:
-
-1. Se o projeto estiver novo, vazio ou sem contexto suficiente, faca primeiro as perguntas necessarias ao usuario.
-2. Gere ou atualize o `README.md` quando o pedido implicar edicao direta e houver base suficiente.
-3. Entregue apenas o markdown como rascunho quando o pedido nao solicitar escrita em arquivo.
-4. Informe resumidamente quais secoes foram criadas, revisadas ou removidas.
-5. Aponte lacunas documentais relevantes fora do `README`, se houver.
+- O que ja funciona hoje?
+- O que ainda esta em construcao?
+- Quem usa hoje ou quem deve usar quando estiver pronto?
+- Existe algum jeito real de instalar, rodar ou testar que nao aparece no repositorio?
+- Ha algum modulo, integracao ou restricao importante que o codigo nao revela bem?
+- O que deveria ficar fora de escopo no `README.md`?
+
+### Se o projeto ainda nao comecou
+
+Perguntar o basico para montar o primeiro README:
+
+- Por que esse projeto precisa existir?
+- Que dor, tarefa ou processo ele melhora?
+- Quem e o publico principal?
+- Qual sera o formato inicial: web, mobile, backend, CLI, automacao ou pacote interno?
+- Existe preferencia de stack, arquitetura, banco ou hospedagem?
+- Existe integracao externa obrigatoria desde o inicio?
+
+### Perguntas complementares
+
+Usar so se ainda forem necessarias:
+
+- Como voce vai saber que o projeto deu certo?
+- O que entra obrigatoriamente na primeira versao?
+- O que esta fora de escopo agora?
+- Existe alguma tecnologia obrigatoria ou proibida?
+- Ha restricoes de seguranca, compliance, custo ou licenca?
+- Quais sistemas externos fazem parte da solucao?
+- Ha MCPs, agents ou integracoes relevantes em uso ou planejados?
+- Existe legado, processo manual ou migracao envolvidos?
+- Quem vai manter o projeto?
+- Existe algum padrao de contribuicao ou revisao que deva entrar no `README.md`?
+
+### Regra pratica
+
+- O que a IA conseguiu responder sozinha vira `README.md`.
+- O que ficou sem resposta vira pergunta ao usuario.
+- Nao pergunte algo que o repositorio ja respondeu com seguranca.
+
+## Forma do README
+
+Fazer o `README.md` responder, do jeito mais curto possivel, as perguntas centrais da skill:
+
+- o que o projeto e;
+- para que serve;
+- para quem serve;
+- que tipo de sistema ele e;
+- em que estado ele esta;
+- qual stack usa ou pretende usar;
+- como e usado, instalado, executado ou publicado, se isso for relevante;
+- quais integracoes, agents ou MCPs existem;
+- o que esta fora de escopo, quando isso mudar a leitura do projeto.
+
+Usar apenas secoes com base suficiente. Bons nomes curtos:
+
+- titulo e descricao curta;
+- finalidade;
+- para quem serve;
+- tipo e estado;
+- stack;
+- integracoes ou MCPs;
+- estrutura;
+- instalacao ou execucao;
+- testes, contribuicao e licenca.
+
+Se o repositorio sugerir MCPs, agents ou integracoes e nao houver nenhum estruturado, deixar isso explicito em uma linha. Nao usar `Uso rapido` ou `Regras do repo` como secoes padrao, a menos que esse seja o jeito mais curto de responder algo realmente importante.
+
+## Regra de escrita
+
+- Preferir bullets curtos e paragrafos de 1 ou 2 linhas.
+- Cortar qualquer frase que nao ajude a entender, instalar, usar ou contribuir.
+- Evitar repeticao e secoes de enfeite.
+- Nao transformar o `README.md` em manual completo.
+
+## Regras dos links simbolicos
+
+Se os arquivos abaixo nao existirem na raiz, criar links simbolicos relativos apontando para `README.md`:
+
+- `CLAUDE.md`
+- `AGENTS.md`
+- `instructions.md`
+
+Nao sobrescrever arquivo existente. Nao substituir link simbolico existente. Se o ambiente impedir symlink, informar claramente em vez de copiar o arquivo.
+
+## Nao fazer
+
+- perguntar cedo por falta de investigacao;
+- inventar stack, arquitetura, testes, licenca ou fluxo;
+- citar artefatos cobertos por `.gitignore`;
+- criar secoes so para seguir molde;
+- copiar o `README.md` para `CLAUDE.md`, `AGENTS.md` ou `instructions.md`.
+
+## Resposta ao usuario
+
+Ao finalizar:
+
+1. informar se o `README.md` foi criado ou revisado;
+2. resumir o que foi simplificado, adicionado ou removido;
+3. informar se os links simbolicos foram criados ou ja existiam;
+4. listar perguntas pendentes ou lacunas restantes, se houver.
