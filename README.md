@@ -29,6 +29,7 @@ Repositorio operacional de skills. Hoje o conteudo visivel e focado em `Skills/`
 - `iniciar-projeto`
 - `instalar-skills-agents-mcps`
 - `napkin`
+- `organizar-commits`
 - `php-pro`
 
 ## Estrutura
@@ -38,6 +39,7 @@ Skills/
 ├── iniciar-projeto/
 ├── instalar-skills-agents-mcps/
 ├── napkin/
+├── organizar-commits/
 └── php-pro/
 ```
 
