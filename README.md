@@ -12,7 +12,7 @@ Para quem usa ou mantem skills nessas CLIs.
 
 ## Tipo e estado
 
-Repositorio operacional de skills. Hoje o conteudo visivel e focado em `Skills/`, em metadados de `agents/` associados a algumas skills e no fluxo de instalacao compartilhada. Nao ha `MCPs` estruturados como parte ativa deste repositorio.
+Repositorio operacional de skills. Hoje o conteudo visivel e focado em `skills/`, em metadados de `agents/` associados a algumas skills e no fluxo de instalacao compartilhada. Nao ha `MCPs` estruturados como parte ativa deste repositorio.
 
 ## Stack
 
@@ -37,7 +37,7 @@ Repositorio operacional de skills. Hoje o conteudo visivel e focado em `Skills/`
 ## Estrutura
 
 ```text
-Skills/
+skills/
 ├── frontend-design/
 ├── iniciar-projeto/
 ├── instalar-skills-agents-mcps/

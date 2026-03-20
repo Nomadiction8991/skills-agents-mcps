@@ -1,4 +1,4 @@
-# Instalação unificada de Skills, MCPs e Agents
+# Instalação unificada de skills, MCPs e agents
 
 > Este é o método recomendado para instalar e manter `skills`, `MCPs` e `agents` em uma única base para várias CLIs. O repositório pode ser clonado em qualquer lugar.
 
@@ -28,15 +28,15 @@ Set-Location ".\skills-agents-mcps"
 
 ## 2) Executar o método mais simples
 
-Com a CLI de sua preferência aberta na raiz do repositório clonado, peça para seguir as instruções do arquivo `Skills/instalar-skills-agents-mcps/SKILL.md`.
+Com a CLI de sua preferência aberta na raiz do repositório clonado, peça para seguir as instruções do arquivo `skills/instalar-skills-agents-mcps/SKILL.md`.
 
 Exemplo de prompt dentro da CLI:
 
 ```text
-Siga as instruções de Skills/instalar-skills-agents-mcps/SKILL.md deste repositório para instalar este clone nas CLIs.
+Siga as instruções de skills/instalar-skills-agents-mcps/SKILL.md deste repositório para instalar este clone nas CLIs.
 ```
 
-Esse processo cria ou atualiza os links para que `codex`, `claude` e `copilot` usem a mesma pasta `Skills` deste clone, independentemente de onde o repositório esteja.
+Esse processo cria ou atualiza os links para que `codex`, `claude` e `copilot` usem a mesma pasta `skills` deste clone, independentemente de onde o repositório esteja.
 
 ## 3) Verificação rápida
 
@@ -54,4 +54,4 @@ Get-Item "$env:USERPROFILE\.codex\skills","$env:USERPROFILE\.claude\skills","$en
 Get-Location
 ```
 
-Você deve ver os caminhos de `skills` apontando para a pasta `Skills` dentro do repositório clonado.
+Você deve ver os caminhos de `skills` apontando para a pasta `skills` dentro do repositório clonado.
