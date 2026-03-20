@@ -46,7 +46,8 @@ Skills/
 └── php-pro/
 
 agents/
-└── frontend-design/
+├── frontend-design/
+└── organizar-commits/
 ```
 
 ## Instalacao
