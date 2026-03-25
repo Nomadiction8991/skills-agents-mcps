@@ -16,5 +16,6 @@ updated: 2026-03-25
 
 ### Alterado
 - **Iniciar Projeto**: o bootstrap inicial agora preserva `README.md` e `napkin.md`, cria `INSTRUCTIONS.md` e organiza markdowns reais em `docs/` ([ver doc](../README.md))
+- **Organizar Commits**: o workflow agora foi dividido em subskills, templates e etapas obrigatorias de documentacao antes dos commits ([ver doc](../README.md))
 
 ### Removido

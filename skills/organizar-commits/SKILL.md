@@ -1,97 +1,134 @@
 ---
 name: organizar-commits
-version: "7.5"
-description: "Separar alteracoes Git em commits atomicos com Conventional Commits e Stacked Branches."
+version: "10.0"
+description: "Analisar mudancas, criar documentacao e organizar commits atomicos. Inclui setup automatico do VitePress."
 ---
 # Git Workflow
 
 ## Glossario
-UL=Unidade Logica | CC=Conventional Commits | SB=Stacked Branch | BC=Breaking Change
+UL=Unidade Logica | CC=Conventional Commits | BC=Breaking Change
 
-## Regra central
-1 UL = 1 intencao = 1 commit = 1 branch.
-Empilhar por dependencia real, nunca por arquivo, nunca por ordem de criacao.
-
-## REGRA DE BRANCH — sempre ativa, sem excecao
-
-Mesmo quando a UL e independente e a base correta e `main/master`, ainda assim
-ela MUST ter branch propria para abrir PR/MR.
-
+## Estrutura da skill
 ```
-base = main/master  !=  commit direto em main/master
-base = branch-pai   !=  reaproveitar a branch-pai para outra UL
-```
-
-Se existem 3 ULs, existem 3 branches, mesmo que as 3 sejam independentes de
-`main`.
-
-## Fluxo obrigatorio
-```
-verificar_precondicoes → achar_ULs → classificar_dependencias → montar_stack → criar_branch_da_UL → commitar
+organizar-commits/
+├── SKILL.md
+├── subskills/
+│   ├── git/        → analisar-projeto, pre-condicoes, separar-hunks,
+│   │                 stacked-branches, conventional-commits, output-format
+│   ├── doc/        → doc-readme, doc-identificar, doc-feature, doc-fix,
+│   │                 doc-chore, doc-changelog, doc-estrutura
+│   └── vitepress/  → vitepress-setup, vitepress-detectar, vitepress-node,
+│                     vitepress-docker, vitepress-configurar, vitepress-iniciar
+├── docs-templates/ → INDEX, CHANGELOG, feature, fix, release
+└── vitepress/      → config.js, package.json
 ```
 
-## Preferencia operacional
-Por padrao, trabalhe no mesmo diretório e evite criar `git worktree`.
-So usar `git worktree` se o usuario pedir explicitamente.
+---
 
-## REGRA DE BASE DE BRANCH — sempre ativa, sem excecao
+## FLUXO COMPLETO — executar TUDO, nesta ordem, sem pular
 
-Antes de criar qualquer branch, responder:
-
-> "Esta UL funciona, compila e faz sentido SEM qualquer outra UL pendente?"
-
+### FASE 1 — Análise (obrigatória)
 ```
-sim → base = main/master   (mas ainda cria branch propria da UL)
-nao → base = branch da UL da qual ela depende
+1. ler README.md do projeto    → mapa de onde cada domínio está documentado
+2. @analisar-projeto           → git status, git diff, entender mudanças
 ```
 
-### Sinais de dependencia real (base NAO pode ser main)
-- usa campo/tipo/interface criado por outra UL pendente
-- importa arquivo criado ou movido por outra UL pendente
-- teste que so passa se outra UL ja foi aplicada
-- logica que quebra em runtime sem a UL anterior
-
-### Sinais de independencia (base PODE ser main)
-- mudanca isolada que nao toca codigo de outras ULs pendentes
-- docs, configs, scripts que nao afetam runtime de outras ULs
-- fix de bug em area nao relacionada a outras ULs pendentes
-- refactoring mecanico (rename, move) que nao e usado por outras ULs
-
-### Pilhas paralelas — quando existem
-Se duas ULs sao independentes entre si E independentes de main:
-ambas saem de main como pilhas separadas, sem numeracao obrigatoria no nome.
-
+### FASE 2 — VitePress (obrigatória se não configurado)
 ```
-UL A (independente) → sai de main
-UL B (independente) → sai de main   ← pilha paralela, nao filha da UL A
-UL C (depende da UL B) → sai da branch da UL B
+3. verificar se VitePress existe:
+   [ -f docs/.vitepress/config.js ] || [ -f docs/.vitepress/config.ts ]
+
+   NÃO existe → executar AGORA:
+     @vitepress-setup
+       └─ @vitepress-detectar
+            ├─ Docker → @vitepress-docker → @vitepress-configurar → @vitepress-iniciar
+            ├─ sem Node → @vitepress-node → @vitepress-configurar → @vitepress-iniciar
+            └─ com Node → @vitepress-configurar → @vitepress-iniciar
+
+   JÁ existe → pular para Fase 3
 ```
 
-### Erro comum a evitar
-Nao empilhar ULs so porque foram criadas em sequencia.
-Sequencia de criacao NAO implica dependencia.
+### FASE 3 — Documentação (obrigatória, antes dos commits)
+```
+4. @doc-identificar            → domínio afetado + arquivo alvo na doc
 
-Tambem nao commitar UL independente direto em `main/master` so porque a base
-correta dela e `main/master`.
+5. por tipo de mudança:
+     feat  → @doc-feature  → @doc-changelog
+     fix   → @doc-fix      → @doc-changelog
+     chore → @doc-chore    → @doc-changelog (se operacional)
+     domínio novo → @doc-estrutura → voltar ao passo 5
 
-## Modulos disponiveis (ler sob demanda)
-| Modulo | Quando carregar |
-|--------|----------------|
-| @pre-condicoes | antes de comecar qualquer operacao |
-| @separar-hunks | ao dividir mudancas em ULs |
-| @stacked-branches | ao criar/gerenciar a pilha de branches |
-| @conventional-commits | ao escrever titulo/body/footer |
-| @output-format | ao gerar o resultado final |
+6. atualizar README.md se criou arquivo novo em docs/
+```
 
-## Nao fazer (sempre ativo)
-- nao misturar assuntos no mesmo commit
-- nao separar por arquivo; separar por intencao
-- nao commitar UL diretamente em `main/master`; sempre criar branch propria
-- nao incluir numero sequencial de UL no nome da branch; use nomes curtos e descritivos
-- nao criar `git worktree` sem pedido explicito do usuario
-- nao criar branch filha sem dependencia real e verificada
-- nao empilhar por ordem de arquivo ou sequencia de criacao
-- nao usar `git commit -m` para corpo detalhado
-- nao mergear PRs fora de ordem na stack
-- nao misturar refactoring com mudanca funcional
-- nao ultrapassar ~400 linhas por UL sem justificativa
+### FASE 4 — Commits (executar após doc pronta)
+```
+7. classificar ULs             → separar por intenção, não por arquivo
+8. @stacked-branches           → criar branches e commits
+```
+
+---
+
+## REGRA DE BASE DE BRANCH — sem exceção
+
+> "Esta UL funciona sozinha, sem qualquer outra UL pendente?"
+
+```
+SIM → base = main/master
+NÃO → base = branch da UL que ela precisa
+```
+
+**Independência é a regra. Dependência é a exceção.**
+Sequência de criação NÃO implica dependência.
+ULs independentes entre si → pilhas paralelas, todas saindo de main.
+
+---
+
+## NOME DE BRANCH — sem número sequencial
+
+```
+<tipo>/<tema>-<resumo>
+
+✓ feat/organizar-commits-workflow
+✓ feat/interface-design-skill
+✓ fix/auth-token-refresh
+✗ feat/auth/03-token-refresh     ← número proibido
+✗ feat/03-auth                   ← número proibido
+```
+
+---
+
+## Subskills — carregar sob demanda
+| Subskill | Quando |
+|----------|--------|
+| @analisar-projeto | SEMPRE — fase 1 |
+| @doc-identificar | SEMPRE — fase 3 |
+| @doc-readme | ao ler/atualizar README |
+| @doc-feature | commit feat |
+| @doc-fix | commit fix |
+| @doc-chore | commit chore/build/ci |
+| @doc-changelog | ao final de feature/fix/chore relevante |
+| @doc-estrutura | domínio sem doc ainda |
+| @vitepress-setup | VitePress não configurado — fase 2 |
+| @vitepress-detectar | primeiro passo do setup |
+| @vitepress-node | sem Node no ambiente |
+| @vitepress-docker | projeto com Docker |
+| @vitepress-configurar | após Node disponível |
+| @vitepress-iniciar | após configurar |
+| @separar-hunks | ao dividir mudanças em ULs |
+| @stacked-branches | ao criar branches e commits |
+| @conventional-commits | ao escrever título/body/footer |
+| @output-format | ao gerar resultado final |
+| @pre-condicoes | dúvida sobre estado do repo |
+
+---
+
+## Não fazer — sempre ativo
+- não pular nenhuma das 4 fases
+- não criar branch sem verificar base (main ou dependente?)
+- não usar número sequencial no nome da branch
+- não empilhar ULs só porque vieram em sequência
+- não criar doc sem verificar se domínio já existe
+- fix nunca cria arquivo novo — corrige o existente
+- não usar `git commit -m` para corpo detalhado
+- não espalhar `.md` fora de `docs/` (exceto README, INSTRUCTIONS, CLAUDE, AGENTS)
