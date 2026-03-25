@@ -7,3 +7,5 @@ updated: 2026-03-25
 # Changelog
 
 - [Unreleased](./unreleased.md) - mudancas pendentes de release.
+- Versoes fechadas ainda nao publicadas neste repositorio.
+- [Indice da documentacao](../README.md)

@@ -1,6 +1,17 @@
-# Instalação unificada de skills, MCPs e agents
+---
+title: "Instalacao compartilhada de skills"
+updated: 2026-03-25
+---
 
-> Este é o método recomendado para instalar e manter `skills`, `MCPs` e `agents` em uma única base para várias CLIs. O repositório pode ser clonado em qualquer lugar.
+# Instalacao compartilhada de skills
+
+> Este e o fluxo recomendado para fazer `codex`, `claude` e `copilot` usarem a mesma pasta `skills` deste clone.
+
+## O que este fluxo cobre
+
+- Compartilha apenas a pasta `skills/`.
+- Nao instala `agents` nem `MCPs` como parte ativa do fluxo atual.
+- Funciona com o repositorio clonado em qualquer caminho.
 
 ## Pré-requisitos
 
@@ -26,7 +37,7 @@ git clone git@github.com:Nomadiction8991/skills-agents-mcps.git
 Set-Location ".\\skills-agents-mcps"
 ```
 
-## 2) Executar o método mais simples
+## 2) Executar o metodo mais simples
 
 Com a CLI de sua preferência aberta na raiz do repositório clonado, peça para seguir as instruções do arquivo `skills/instalar-skills-agents-mcps/SKILL.md`.
 
@@ -36,7 +47,7 @@ Exemplo de prompt dentro da CLI:
 Siga as instruções de skills/instalar-skills-agents-mcps/SKILL.md deste repositório para instalar este clone nas CLIs.
 ```
 
-Esse processo cria ou atualiza os links para que `codex`, `claude` e `copilot` usem a mesma pasta `skills` deste clone, independentemente de onde o repositório esteja.
+Esse processo cria ou atualiza os links para que `codex`, `claude` e `copilot` usem a mesma pasta `skills` deste clone, independentemente de onde o repositorio esteja.
 
 ## 3) Verificação rápida
 
@@ -54,4 +65,14 @@ Get-Item "$env:USERPROFILE\\.codex\\skills","$env:USERPROFILE\\.claude\\skills",
 Get-Location
 ```
 
-Você deve ver os caminhos de `skills` apontando para a pasta `skills` dentro do repositório clonado.
+Voce deve ver os caminhos de `skills` apontando para a pasta `skills` dentro do repositorio clonado.
+
+## 4) Proximo passo
+
+Depois da instalacao, execute a skill `iniciar-projeto` no `Claude`, no `Copilot` ou no `Codex`.
+
+## Veja tambem
+
+- [Indice da documentacao](./README.md)
+- [Pagina inicial](./index.md)
+- [Changelog unreleased](./changelog/unreleased.md)

@@ -1,34 +1,30 @@
 # skills-agents-mcps
 
-Repositorio de skills compartilhadas para `Codex`, `Claude` e `Copilot`.
+Base compartilhada de skills operacionais para `Codex`, `Claude` e `Copilot`.
+Este README e um mapa curto do repositorio e aponta para a documentacao detalhada em `docs/`.
 
-## Finalidade
+## Resumo do sistema
 
-Centralizar skills reutilizaveis para manter o mesmo conjunto de instrucoes entre CLIs.
+- Repositorio de documentacao operacional, nao de codigo de producao.
+- `skills/` e a fonte compartilhada consumida pelas CLIs suportadas.
+- `agents/` publica metadados ligados a algumas skills.
+- MCPs estruturados ainda nao fazem parte do escopo atual do repositorio.
 
-## Para quem serve
+## Documentacao
 
-- Quem usa essas CLIs no dia a dia.
-- Quem mantem skills compartilhadas entre ambientes.
+- [Inicio da documentacao](docs/index.md)
+- [Indice da documentacao](docs/README.md)
+- [Instalacao compartilhada](docs/INSTALL.md)
+- [Changelog unreleased](docs/changelog/unreleased.md)
+- [Historico do changelog](docs/changelog/index.md)
 
-## Tipo e estado
+## Estrutura resumida
 
-- Tipo: repositorio de documentacao operacional.
-- Estado: em uso, com skills e fluxo de instalacao documentados.
-- Fora de escopo atual: MCPs estruturados no repositorio.
+- [`skills/`](skills) contem as skills reutilizaveis publicadas no repositorio.
+- [`agents/`](agents) contem os metadados de agents associados a algumas skills.
+- [`docs/`](docs) concentra o guia navegavel do VitePress e o changelog.
 
-## Stack
-
-- `Markdown` para skills e documentacao.
-- `bash` e `PowerShell` no fluxo de instalacao.
-
-## Integracoes e MCPs
-
-- Uso compartilhado com `Codex`, `Claude` e `Copilot`.
-- Agents estruturados: `agents/frontend-design/openai.yaml` e `agents/organizar-commits/openai.yaml`.
-- MCPs estruturados: nenhum no estado atual.
-
-## O que existe hoje
+## Skills disponiveis
 
 - `interface-design`
 - `iniciar-projeto`
@@ -37,40 +33,9 @@ Centralizar skills reutilizaveis para manter o mesmo conjunto de instrucoes entr
 - `organizar-commits`
 - `php-pro`
 
-## Estrutura
+## Fluxo recomendado
 
-```text
-docs/
-├── INSTALL.md
-└── README.md -> ../README.md
-
-skills/
-├── interface-design/
-├── iniciar-projeto/
-├── instalar-skills-agents-mcps/
-├── napkin/
-├── organizar-commits/
-└── php-pro/
-
-agents/
-├── frontend-design/
-└── organizar-commits/
-```
-
-## Instalacao
-
-O fluxo recomendado esta em `docs/INSTALL.md`.
-
-## Documentacao
-
-Rodar localmente:
-
-```bash
-npm run docs:dev
-```
-
-Acessar em: `http://localhost:5173`
-
-## Licenca
-
-- Nao ha `LICENSE` na raiz.
+1. Abra [Instalacao compartilhada](docs/INSTALL.md).
+2. Configure `codex`, `claude` e `copilot` para usar a mesma pasta `skills` deste clone.
+3. Depois execute a skill `iniciar-projeto` no repositorio em que voce vai trabalhar.
+4. Consulte o [changelog unreleased](docs/changelog/unreleased.md) antes de reorganizar skills ou commits.

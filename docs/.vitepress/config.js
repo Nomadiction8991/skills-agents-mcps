@@ -9,7 +9,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'Inicio', link: '/' },
-      { text: 'Repositorio', link: '/README' },
+      { text: 'Guia', link: '/README' },
       { text: 'Instalacao', link: '/INSTALL' },
       { text: 'Changelog', link: '/changelog/unreleased' }
     ],
