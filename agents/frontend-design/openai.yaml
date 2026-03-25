@@ -1,4 +1,4 @@
 interface:
-  display_name: "Frontend Design"
-  short_description: "Interfaces frontend com alto nivel de design"
-  default_prompt: "Use $frontend-design para criar uma interface frontend marcante e pronta para producao."
+  display_name: "Interface Design"
+  short_description: "Design de interfaces com alto nivel de craft"
+  default_prompt: "Use $interface-design para criar uma interface marcante e pronta para producao."

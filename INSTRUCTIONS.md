@@ -12,7 +12,7 @@ Um repositório centralizado de **skills reutilizáveis** compartilhadas entre C
 
 ```
 skills/
-├── frontend-design/         # Design de UIs: dashboards, apps, ferramentas
+├── interface-design/        # Design de UIs: dashboards, apps, ferramentas
 ├── iniciar-projeto/         # Criar INSTRUCTIONS.md/README.md e organizar docs/ preservando README e napkin na raiz
 ├── instalar-skills-agents-mcps/  # Instalação unificada em todas as CLIs
 ├── napkin/                  # Runbook operacional continuamente curado
@@ -53,7 +53,7 @@ Antes de qualquer outra coisa, leia `/napkin.md` se existir. Internalize silenci
 
 | Skill | Gatilho | Carregue quando |
 |-------|---------|-----------------|
-| `frontend-design` | Design de UIs (dashboards, apps, ferramentas) | Design de qualquer interface (NÃO landing pages/marketing) |
+| `interface-design` | Design de UIs (dashboards, apps, ferramentas) | Design de qualquer interface (NÃO landing pages/marketing) |
 | `php-pro` | Implementação PHP/Laravel/Symfony/Yii | Código PHP, tipos, PSR, PHPStan, testes |
 | `napkin` | Sempre ativa | Toda sessão: leia primeiro, cuide continuamente |
 | `organizar-commits` | Git workflow | Organizar mudanças em commits atômicos, branching |

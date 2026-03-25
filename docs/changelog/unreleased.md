@@ -10,6 +10,7 @@ updated: 2026-03-25
 
 ### Adicionado
 - **Documentacao**: navegacao local com VitePress e changelog unreleased agora fazem parte do repositorio ([ver doc](../README.md))
+- **Interface Design**: nova skill para design de interfaces substitui a skill anterior de frontend ([ver doc](../README.md))
 
 ### Corrigido
 

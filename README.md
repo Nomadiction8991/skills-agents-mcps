@@ -30,7 +30,7 @@ Centralizar skills reutilizaveis para manter o mesmo conjunto de instrucoes entr
 
 ## O que existe hoje
 
-- `frontend-design`
+- `interface-design`
 - `iniciar-projeto`
 - `instalar-skills-agents-mcps`
 - `napkin`
@@ -45,7 +45,7 @@ docs/
 └── README.md -> ../README.md
 
 skills/
-├── frontend-design/
+├── interface-design/
 ├── iniciar-projeto/
 ├── instalar-skills-agents-mcps/
 ├── napkin/
