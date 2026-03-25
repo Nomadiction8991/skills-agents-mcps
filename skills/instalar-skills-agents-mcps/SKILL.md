@@ -36,3 +36,9 @@ Fazer com que as CLIs `codex`, `claude` e `copilot` usem a mesma pasta de `skill
 ## Resultado esperado
 
 Após a execução, `codex`, `claude` e `copilot` devem compartilhar as mesmas `skills` a partir da pasta `skills` deste repositório.
+
+## Resposta ao usuario
+
+Ao finalizar, responder apenas:
+
+> execute a skill `/iniciar-projeto` no `Claude`, no `Copilot` ou no `Codex`.

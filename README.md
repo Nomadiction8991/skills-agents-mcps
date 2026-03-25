@@ -4,15 +4,18 @@ Repositorio de skills compartilhadas para `Codex`, `Claude` e `Copilot`.
 
 ## Finalidade
 
-Centralizar skills reutilizaveis em um unico lugar para reduzir prompt repetido e manter o mesmo conjunto de instrucoes entre CLIs.
+Centralizar skills reutilizaveis para manter o mesmo conjunto de instrucoes entre CLIs.
 
 ## Para quem serve
 
-Para quem usa ou mantem skills nessas CLIs.
+- Quem usa essas CLIs no dia a dia.
+- Quem mantem skills compartilhadas entre ambientes.
 
 ## Tipo e estado
 
-Repositorio operacional de skills. Hoje o conteudo visivel e focado em `skills/`, em metadados de `agents/` associados a algumas skills e no fluxo de instalacao compartilhada. Nao ha `MCPs` estruturados como parte ativa deste repositorio.
+- Tipo: repositorio de documentacao operacional.
+- Estado: em uso, com skills e fluxo de instalacao documentados.
+- Fora de escopo atual: MCPs estruturados no repositorio.
 
 ## Stack
 
@@ -22,7 +25,7 @@ Repositorio operacional de skills. Hoje o conteudo visivel e focado em `skills/`
 ## Integracoes e MCPs
 
 - Uso compartilhado com `Codex`, `Claude` e `Copilot`.
-- Agents estruturados: metadados em `agents/`.
+- Agents estruturados: `agents/frontend-design/openai.yaml` e `agents/organizar-commits/openai.yaml`.
 - MCPs estruturados: nenhum no estado atual.
 
 ## O que existe hoje
@@ -37,6 +40,10 @@ Repositorio operacional de skills. Hoje o conteudo visivel e focado em `skills/`
 ## Estrutura
 
 ```text
+docs/
+├── INSTALL.md
+└── README.md -> ../README.md
+
 skills/
 ├── frontend-design/
 ├── iniciar-projeto/
@@ -52,4 +59,18 @@ agents/
 
 ## Instalacao
 
-O fluxo recomendado esta em [`INSTALL.md`](./INSTALL.md).
+O fluxo recomendado esta em `docs/INSTALL.md`.
+
+## Documentacao
+
+Rodar localmente:
+
+```bash
+npm run docs:dev
+```
+
+Acessar em: `http://localhost:5173`
+
+## Licenca
+
+- Nao ha `LICENSE` na raiz.

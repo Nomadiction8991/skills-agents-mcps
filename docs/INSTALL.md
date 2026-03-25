@@ -23,7 +23,7 @@ cd skills-agents-mcps
 
 ```powershell
 git clone git@github.com:Nomadiction8991/skills-agents-mcps.git
-Set-Location ".\skills-agents-mcps"
+Set-Location ".\\skills-agents-mcps"
 ```
 
 ## 2) Executar o método mais simples
@@ -50,7 +50,7 @@ pwd
 ### Windows / PowerShell
 
 ```powershell
-Get-Item "$env:USERPROFILE\.codex\skills","$env:USERPROFILE\.claude\skills","$env:USERPROFILE\.copilot\skills"
+Get-Item "$env:USERPROFILE\\.codex\\skills","$env:USERPROFILE\\.claude\\skills","$env:USERPROFILE\\.copilot\\skills"
 Get-Location
 ```
 
