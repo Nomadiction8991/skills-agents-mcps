@@ -1,20 +1,22 @@
 ---
 title: "Documentacao - skills-agents-mcps"
 type: index
-updated: 2026-03-25
+updated: 2026-03-26
 ---
 
-# Documentacao - skills-agents-mcps
+# Documentação - skills-agents-mcps
 
-Indice rapido da documentacao operacional deste repositorio.
-Use esta pagina para navegar entre instalacao, contexto do repositorio e changelog.
+Índice rápido da documentação operacional deste repositório.
+Use esta página para navegar entre instalação, contexto do repositório e changelog.
 
 ## Comece por aqui
 
-- [Pagina inicial](./index.md)
-- [Instalacao compartilhada](./INSTALL.md)
+- [Página inicial](./index.md)
+- [Instalação compartilhada](./getting-started/instalacao.md)
 - [Changelog unreleased](./changelog/unreleased.md)
-- [Historico do changelog](./changelog/index.md)
+- [Histórico do changelog](./changelog/index.md)
+- [Getting started (guia rápido)](./getting-started/index.md)
+- [Reference (comandos e convenções)](./reference/index.md)
 
 ## O que este repositorio mantem
 
@@ -33,7 +35,7 @@ Use esta pagina para navegar entre instalacao, contexto do repositorio e changel
 
 ## Fluxo mais comum
 
-1. Leia [Instalacao compartilhada](./INSTALL.md).
+1. Leia [Instalacao compartilhada](./getting-started/instalacao.md).
 2. Execute a skill `instalar-skills-agents-mcps` neste clone.
 3. Depois execute `iniciar-projeto` no repositorio alvo.
 4. Consulte o [changelog unreleased](./changelog/unreleased.md) antes de reorganizar skills ou commits.
