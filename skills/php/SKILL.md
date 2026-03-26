@@ -1,5 +1,5 @@
 ---
-name: php-pro
+name: php
 description: "IMPLEMENTATION SKILL - Atua como especialista PHP senior para implementar codigo em PHP 8.3+, Laravel, Symfony e Yii com tipos estritos, PSR, seguranca e validacao obrigatoria via PHPStan e testes."
 ---
 

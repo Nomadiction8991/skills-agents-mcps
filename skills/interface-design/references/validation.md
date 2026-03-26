@@ -1,48 +1,34 @@
-# Memory Management
+# Validação e Memória
 
-When and how to update `.interface-design/system.md`.
+Use este arquivo ao decidir o que salvar em `.interface-design/system.md`.
 
-## When to Add Patterns
+## Salve um padrão quando ele for:
+- usado 2+ vezes
+- reaproveitável no projeto
+- específico o bastante para importar depois
 
-Add to system.md when:
-- Component used 2+ times
-- Pattern is reusable across the project
-- Has specific measurements worth remembering
+## Formato de salvamento
 
-## Pattern Format
-
-```markdown
-### Button Primary
-- Height: 36px
+```md
+### Botão / Primário
+- Altura: 36px
 - Padding: 12px 16px
-- Radius: 6px
-- Font: 14px, 500 weight
+- Raio: 6px
+- Fonte: 14px / 500
 ```
 
-## Don't Document
+## Não salve
+- experimentos pontuais
+- trabalho temporário
+- variantes que são melhor tratadas por props
 
-- One-off components
-- Temporary experiments
-- Variations better handled with props
+## Antes de criar um novo padrão
+- verifique se já existe algo parecido
+- estenda padrões existentes antes de criar quase duplicatas
 
-## Pattern Reuse
-
-Before creating a component, check system.md:
-- Pattern exists? Use it.
-- Need variation? Extend, don't create new.
-
-Memory compounds: each pattern saved makes future work faster and more consistent.
-
----
-
-# Validation Checks
-
-If system.md defines specific values, check consistency:
-
-**Spacing** — All values multiples of the defined base?
-
-**Depth** — Using the declared strategy throughout? (borders-only means no shadows)
-
-**Colors** — Using defined palette, not random hex codes?
-
-**Patterns** — Reusing documented patterns instead of creating new?
+## Checagens de consistência
+Se `system.md` definir valores, verifique:
+- o espaçamento permanece na grade salva
+- a profundidade segue a estratégia salva
+- a paleta/tokens combinam com o sistema salvo
+- componentes reutilizados seguem os padrões salvos

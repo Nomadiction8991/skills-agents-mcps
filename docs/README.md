@@ -31,7 +31,7 @@ Use esta página para navegar entre instalação, contexto do repositório e cha
 - `instalar-skills-agents-mcps`
 - `napkin`
 - `organizar-commits`
-- `php-pro`
+- `php`
 
 ## Fluxo mais comum
 

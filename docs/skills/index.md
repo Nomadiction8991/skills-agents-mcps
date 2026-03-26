@@ -15,4 +15,4 @@ Resumo das skills disponíveis neste repositório com links para documentação 
 - [napkin](./napkin.md)
 - [organizar-commits](./organizar-commits.md)
 - [organizar-documentacao](./organizar-documentacao.md)
-- [php-pro](./php-pro.md)
+- [php](./php-pro.md)

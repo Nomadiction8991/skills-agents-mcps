@@ -1,70 +1,46 @@
 ---
 name: instalar-vitepress
-description: "Instala e configura VitePress automaticamente. Detecta o ambiente (Docker, Linux, WSL, Windows) e deixa a documentacao acessivel em http://localhost:5173."
+description: "Configura VitePress em projeto ainda sem docs/.vitepress/config.(js|ts). Detecta ambiente, instala dependências no local correto e publica em http://localhost:5173."
 ---
 # Instalar VitePress
 
-## Estrutura
-```
-instalar-vitepress/
-├── SKILL.md
-├── subskills/
-│   ├── vitepress-setup.md
-│   ├── vitepress-detectar.md
-│   ├── vitepress-node.md
-│   ├── vitepress-docker.md
-│   ├── vitepress-configurar.md
-│   └── vitepress-iniciar.md
-└── config/
-    ├── config.js      ← config base do VitePress
-    └── package.json   ← package.json base
-```
+## Objetivo
+Deixar a documentação mínima do projeto funcionando com VitePress.
 
-## Quando usar
+## Use quando
+- `docs/.vitepress/config.js` e `docs/.vitepress/config.ts` não existem
+- o projeto ainda não tem estrutura inicial de docs
 
-Executar quando:
-- VitePress ainda nao esta configurado no projeto
-- `docs/.vitepress/config.js` nao existe
+## Não use quando
+- VitePress já está configurado; nesse caso apenas ajuste ou inicie a doc existente
+- a tarefa é só editar conteúdo dentro de `docs/`
 
-Verificar antes de qualquer acao:
+## Guarda inicial
 ```bash
 [ -f docs/.vitepress/config.js ] || [ -f docs/.vitepress/config.ts ]
 ```
-Se ja existe → nao executar esta skill.
+Se o comando passar, não execute esta skill.
 
-## Fluxo obrigatorio
+## Fluxo
+1. `@vitepress-detectar`
+2. Se Docker/container → `@vitepress-docker`
+3. Se sem Node fora de Docker → `@vitepress-node`
+4. `@vitepress-configurar`
+5. `@vitepress-iniciar`
 
-```
-@vitepress-setup
-  └─ @vitepress-detectar
-       ├─ Docker detectado → @vitepress-docker    → @vitepress-configurar → @vitepress-iniciar
-       ├─ Node ausente     → @vitepress-node      → @vitepress-configurar → @vitepress-iniciar
-       └─ Node presente    → @vitepress-configurar → @vitepress-iniciar
-```
-
-## Resultado esperado
-
-```
-✓ docs/.vitepress/config.js configurado
-✓ docs/index.md criado (pagina inicial)
-✓ package.json com scripts docs:dev, docs:build, docs:preview
-✓ servidor acessivel em http://localhost:5173
-```
+## Regras críticas
+- Detecte o ambiente antes de instalar qualquer coisa.
+- Fora de Docker, prefira NVM para Linux/WSL; não use `apt` para Node.
+- Em fluxo Docker, não instale Node na máquina host.
+- Preserve `package.json` existente; adicione apenas o que faltar.
+- Use os templates em `config/` em vez de reescrever arquivos longos no prompt.
+- Crie só a estrutura mínima necessária.
+- Em Docker, exponha o dev server com `--host 0.0.0.0`.
+- Seja idempotente: evite sobrescrever arquivos já válidos.
 
 ## Subskills
-
-| Subskill | Quando carregar |
-|----------|----------------|
-| @vitepress-setup | entry point — sempre primeiro |
-| @vitepress-detectar | sempre — identifica ambiente |
-| @vitepress-node | Linux/WSL/macOS sem Node instalado |
-| @vitepress-docker | projeto com Docker ou docker-compose |
-| @vitepress-configurar | apos Node disponivel — cria config e estrutura |
-| @vitepress-iniciar | apos configurar — sobe servidor e verifica acesso |
-
-## Nao fazer
-
-- nao instalar Node via apt (versao desatualizada) — usar NVM
-- nao instalar Node na host se projeto usa Docker — configurar container
-- nao sobrescrever package.json existente — apenas adicionar scripts e devDependency
-- nao executar se VitePress ja estiver configurado
+- `@vitepress-detectar`: decide o caminho de execução
+- `@vitepress-node`: instala Node quando faltar fora de Docker
+- `@vitepress-docker`: configura execução via Compose/container
+- `@vitepress-configurar`: cria estrutura, scripts e templates
+- `@vitepress-iniciar`: sobe e valida o servidor

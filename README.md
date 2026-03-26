@@ -31,7 +31,7 @@ Este README e um mapa curto do repositorio e aponta para a documentacao detalhad
 - `instalar-skills-agents-mcps`
 - `napkin`
 - `organizar-commits`
-- `php-pro`
+- `php`
 
 ## Fluxo recomendado
 

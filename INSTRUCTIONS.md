@@ -17,7 +17,7 @@ skills/
 ├── instalar-skills-agents-mcps/  # Instalação unificada em todas as CLIs
 ├── napkin/                  # Runbook operacional continuamente curado
 ├── organizar-commits/       # Git workflow: ULs, branches empilhadas, CC
-└── php-pro/                 # Implementação PHP 8.3+ senior
+└── php/                     # Implementação PHP 8.3+ senior
 
 agents/
 ├── frontend-design/openai.yaml
@@ -54,7 +54,7 @@ Antes de qualquer outra coisa, leia `/napkin.md` se existir. Internalize silenci
 | Skill | Gatilho | Carregue quando |
 |-------|---------|-----------------|
 | `interface-design` | Design de UIs (dashboards, apps, ferramentas) | Design de qualquer interface (NÃO landing pages/marketing) |
-| `php-pro` | Implementação PHP/Laravel/Symfony/Yii | Código PHP, tipos, PSR, PHPStan, testes |
+| `php` | Implementação PHP/Laravel/Symfony/Yii | Código PHP, tipos, PSR, PHPStan, testes |
 | `napkin` | Sempre ativa | Toda sessão: leia primeiro, cuide continuamente |
 | `organizar-commits` | Git workflow | Organizar mudanças em commits atômicos, branching |
 | `iniciar-projeto` | Novo repo | Criar `INSTRUCTIONS.md` e `README.md` vazios quando ausentes, mover outros `.md` reais da raiz para `docs/` e criar symlinks relativos |
@@ -85,7 +85,7 @@ Este é um repositório de **documentação operacional**, não de código execu
 
 ## Referências de domínio
 
-Cada skill pode carregar referências específicas. Por exemplo, `php-pro` carrega:
+Cada skill pode carregar referências específicas. Por exemplo, `php` carrega:
 
 - `referencias/modern-php-features.md` (tipos, enums, fibers, PHP 8.1+)
 - `referencias/laravel-padroes.md` (services, repositories, requests, Eloquent)

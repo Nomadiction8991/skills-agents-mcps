@@ -39,7 +39,7 @@ export default defineConfig({
             { text: 'napkin', link: '/skills/napkin' },
             { text: 'organizar-commits', link: '/skills/organizar-commits' },
             { text: 'organizar-documentacao', link: '/skills/organizar-documentacao' },
-            { text: 'php-pro', link: '/skills/php-pro' }
+            { text: 'php', link: '/skills/php' }
           ]
         }
       ],
