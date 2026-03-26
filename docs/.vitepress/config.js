@@ -10,7 +10,7 @@ export default defineConfig({
     nav: [
       { text: 'Inicio', link: '/' },
       { text: 'Guia', link: '/README' },
-      { text: 'Instalacao', link: '/INSTALL' },
+      { text: 'Instalacao', link: '/getting-started/instalacao' },
       { text: 'Changelog', link: '/changelog/unreleased' }
     ],
 
