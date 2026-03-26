@@ -13,10 +13,10 @@ Use esta página para navegar entre instalação, contexto do repositório e cha
 
 - [Página inicial](./index.md)
 - [Instalação compartilhada](./getting-started/instalacao.md)
+- [Reference (comandos e convenções)](./reference/index.md)
+- [Skills publicadas](./skills/index.md)
 - [Changelog unreleased](./changelog/unreleased.md)
 - [Histórico do changelog](./changelog/index.md)
-- [Getting started (guia rápido)](./getting-started/index.md)
-- [Reference (comandos e convenções)](./reference/index.md)
 
 ## O que este repositorio mantem
 

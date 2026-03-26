@@ -23,6 +23,9 @@ features:
   - title: Instalação
     details: Configure Codex, Claude e Copilot para compartilhar a mesma pasta skills deste clone.
     link: /getting-started/instalacao
+  - title: Skills
+    details: Conheça todas as skills disponíveis neste repositório com suas documentações e como usá-las.
+    link: /skills/index
   - title: Changelog
     details: Veja o que mudou e o que ainda não foi lançado antes de mexer nas skills ou nos commits.
     link: /changelog/unreleased
