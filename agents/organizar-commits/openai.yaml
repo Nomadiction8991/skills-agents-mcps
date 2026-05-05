@@ -1,7 +1,0 @@
-interface:
-  display_name: "Organizar Commits"
-  short_description: "Organize e crie commits Git coerentes"
-  default_prompt: "Use $organizar-commits para analisar as mudancas pendentes, agrupar por intencao e criar commits em PT-BR."
-
-policy:
-  allow_implicit_invocation: false

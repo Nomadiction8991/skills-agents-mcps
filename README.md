@@ -27,7 +27,7 @@ Este README e um mapa curto do repositorio e aponta para a documentacao detalhad
 ## Skills disponiveis
 
 - `interface-design`
-- `iniciar-projeto`
+- `start-project`
 - `instalar-skills-agents-mcps`
 - `napkin`
 - `organizar-commits`
@@ -37,5 +37,5 @@ Este README e um mapa curto do repositorio e aponta para a documentacao detalhad
 
 1. Abra [Instalacao compartilhada](docs/INSTALL.md).
 2. Configure `codex`, `claude` e `copilot` para usar a mesma pasta `skills` deste clone.
-3. Depois execute a skill `iniciar-projeto` no repositorio em que voce vai trabalhar.
+3. Depois execute a skill `start-project` no repositorio em que voce vai trabalhar.
 4. Consulte o [changelog unreleased](docs/changelog/unreleased.md) antes de reorganizar skills ou commits.

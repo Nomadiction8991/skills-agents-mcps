@@ -1,4 +1,0 @@
-interface:
-  display_name: "Interface Design"
-  short_description: "Design de interfaces com alto nivel de craft"
-  default_prompt: "Use $interface-design para criar uma interface marcante e pronta para producao."
