@@ -28,7 +28,38 @@ echo "=== Detectando Ferramentas ==="
 [ $HAS_GEMINI -eq 1 ] && echo "  [OK] Gemini detectado" || echo "  [--] Gemini não encontrado"
 echo ""
 
-echo "=== Criando Symlinks ==="
+if [ $HAS_CLAUDE -eq 1 ] || [ $HAS_CODEX -eq 1 ] || [ $HAS_GEMINI -eq 1 ]; then
+  link "$REPO_ROOT/config/caveman-config.json" "$HOME/.config/caveman/config.json"
+fi
+
+link_hooks() {
+  local ia="$1"
+  local dst_dir="$2"
+  echo "Instalando hooks para $ia em $dst_dir..."
+  [ -L "$dst_dir" ] && rm -f "$dst_dir"
+  mkdir -p "$dst_dir"
+  for plugin_dir in "$REPO_ROOT/plugins"/*/; do
+    [ -d "$plugin_dir/hooks" ] || continue
+    
+    # 1. Hooks genéricos
+    for hfile in "$plugin_dir/hooks"/*; do
+      [ -f "$hfile" ] || continue
+      hname="$(basename "$hfile")"
+      [ "$hname" == "hooks.json" ] && continue
+      ln -sf "$hfile" "$dst_dir/$hname"
+    done
+    
+    # 2. Hooks específicos da IA (ex: plugins/rtk-ai/hooks/claude)
+    local ia_hook_dir="$plugin_dir/hooks/$ia"
+    if [ -d "$ia_hook_dir" ]; then
+      for hfile in "$ia_hook_dir"/*; do
+        [ -f "$hfile" ] || continue
+        hname="$(basename "$hfile")"
+        ln -sf "$hfile" "$dst_dir/$hname"
+      done
+    fi
+  done
+}
 
 if [ $HAS_CLAUDE -eq 1 ]; then
   echo "Configurando Claude..."
@@ -36,15 +67,16 @@ if [ $HAS_CLAUDE -eq 1 ]; then
   link "$REPO_ROOT/agents"                   "$HOME/.claude/agents"
   link "$REPO_ROOT/config/GLOBAL.md"           "$HOME/.claude/CLAUDE.md"
   link "$REPO_ROOT/config/claude-settings.json" "$HOME/.claude/settings.json"
-  link "$REPO_ROOT/config/caveman-config.json" "$HOME/.config/caveman/config.json"
-  link "$REPO_ROOT/plugins/caveman/hooks"      "$HOME/.claude/hooks"
+  link_hooks "claude" "$HOME/.claude/hooks"
 fi
 
 if [ $HAS_CODEX -eq 1 ]; then
   echo "Configurando Codex..."
   link "$REPO_ROOT/skills"                   "$HOME/.codex/skills"
-  link "$REPO_ROOT/config/GLOBAL.md"           "$HOME/.codex/AGENTS.md"
+  link "$REPO_ROOT/agents"                   "$HOME/.codex/agents"
+  link "$REPO_ROOT/config/GLOBAL.md"           "$HOME/.codex/CODEX.md"
   link "$REPO_ROOT/config/codex-marketplace.json" "$HOME/.codex/marketplace.json"
+  link_hooks "codex" "$HOME/.codex/hooks"
 fi
 
 if [ $HAS_GEMINI -eq 1 ]; then
@@ -53,11 +85,41 @@ if [ $HAS_GEMINI -eq 1 ]; then
   link "$REPO_ROOT/agents"                   "$HOME/.gemini/agents"
   link "$REPO_ROOT/config/GLOBAL.md"           "$HOME/.gemini/GEMINI.md"
   link "$REPO_ROOT/config/gemini-settings.json" "$HOME/.gemini/settings.json"
+  link_hooks "gemini" "$HOME/.gemini/hooks"
 fi
 echo ""
 
+echo "=== Vinculando Skills/Agents dos Plugins ==="
+for plugin_dir in "$REPO_ROOT/plugins"/*/; do
+  [ -d "$plugin_dir" ] || continue
+  pname="$(basename "$plugin_dir")"
+  
+  # Link skills do plugin
+  if [ -d "${plugin_dir}skills" ]; then
+    for sdir in "${plugin_dir}skills"/*/; do
+      [ -d "$sdir" ] || continue
+      sname="$(basename "$sdir")"
+      [ $HAS_CLAUDE -eq 1 ] && link "$sdir" "$HOME/.claude/skills/$sname"
+      [ $HAS_CODEX -eq 1 ]  && link "$sdir" "$HOME/.codex/skills/$sname"
+      [ $HAS_GEMINI -eq 1 ] && link "$sdir" "$HOME/.gemini/skills/$sname"
+    done
+  fi
+
+  # Link agents do plugin
+  if [ -d "${plugin_dir}agents" ]; then
+    for adir in "${plugin_dir}agents"/*/; do
+      [ -d "$adir" ] || continue
+      aname="$(basename "$adir")"
+      [ $HAS_CLAUDE -eq 1 ] && link "$adir" "$HOME/.claude/agents/$aname"
+      [ $HAS_CODEX -eq 1 ]  && link "$adir" "$HOME/.codex/agents/$aname"
+      [ $HAS_GEMINI -eq 1 ] && link "$adir" "$HOME/.gemini/agents/$aname"
+    done
+  fi
+done
+echo ""
+
 if [ $HAS_CLAUDE -eq 1 ]; then
-  echo "=== Instalando Plugins (Claude Code) ==="
+  echo "=== Instalando Plugins (Claude Code Native) ==="
   PLUGINS_DIR="$REPO_ROOT/plugins"
   for plugin_dir in "$PLUGINS_DIR"/*/; do
     [ -d "$plugin_dir" ] || continue
@@ -79,11 +141,11 @@ if [ $HAS_CLAUDE -eq 1 ]; then
       bash "$plugin_dir/install.sh" || echo "    aviso: falha no instalador de $name"
     fi
   done
-
   echo ""
-  echo "=== Wiring Plugin Hooks ==="
-  node "$REPO_ROOT/plugins/auto-wire-hooks.js"
 fi
+
+echo "=== Wiring Plugin Hooks (All Platforms) ==="
+node "$REPO_ROOT/plugins/auto-wire-hooks.js"
 
 echo ""
 echo "✓ Instalação concluída. Próximo passo: /start-project em qualquer projeto."

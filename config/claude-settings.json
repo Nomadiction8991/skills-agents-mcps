@@ -180,6 +180,15 @@
             "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/rtk-ai/hooks/claude/rtk-rewrite.sh\""
+          }
+        ]
       }
     ]
   },
