@@ -1,135 +1,121 @@
 # CLAUDE.md
 
-Guia para Claude Code (claude.ai/code) ao trabalhar com código neste repositório.
+Guia para Claude Code ao trabalhar neste repositório.
 
 ## Visão Geral
 
-Repositório de **skills reutilizáveis** para Claude, Codex e Gemini. **NÃO é produção** — é documentação operacional com workflows, padrões e guias para assistentes de IA e desenvolvedores.
+Repositório central de **skills, agents, plugins e configs compartilhados** para `Claude`, `Codex` e `Gemini`. **Não é código de produção** — é infraestrutura declarativa consumida pelas CLIs via symlinks.
 
-- **`skills/`** — definições executadas pelas CLIs
-- **`docs/`** — documentação VitePress para usuários
-- **`agents/`** — metadados de agents vinculados a skills
-- **`napkin.md`** — runbook operacional com regras de alto valor
-- **`package.json`** — mínimo; apenas para `npm install` executar docs localmente
+Estrutura raiz:
 
-## Comandos de Desenvolvimento
+- **`skills/`** — skills próprias + symlinks de skills vendoradas em `plugins/`
+- **`agents/`** — metadados de agents (`.md` por agent)
+- **`plugins/`** — plugins vendorados (caveman, claude-code-optimizer, code-review-graph, context-mode, rtk-ai)
+- **`config/`** — configs compartilhadas (`GLOBAL.md`, `claude-settings.json`, `codex-marketplace.json`, `gemini-settings.json`, `caveman-config.json`)
+- **`install.sh` / `install.bat`** — instalador unificado (Linux/macOS / Windows)
+- **`napkin.md`** — runbook operacional (gitignored, local)
+- **`README.md`** — mapa curto para GitHub
 
-### Documentação
+## Instalação
+
+Comando único, detecta `claude`, `codex`, `gemini` automaticamente:
 
 ```bash
-npm install                # Dependências (executa a partir da raiz)
-npm run docs:dev          # Servidor de desenvolvimento (http://localhost:5173)
-npm run docs:build        # Build (output em docs/.vitepress/dist)
-npm run docs:preview      # Preview do build
+bash install.sh        # Linux/macOS
+install.bat            # Windows
 ```
 
-Skills são arquivos declarativos — sem testes, linting ou builds.
+O instalador cria symlinks em `~/.claude/`, `~/.codex/`, `~/.gemini/` apontando para `skills/`, `agents/`, `config/GLOBAL.md`, settings + hooks dos plugins.
 
-## Arquitetura & Estrutura
+Pré-condição: rodar **dentro** do clone de `skills-agents-mcps` (validado via `git remote`).
 
-### Diretório `skills/`
+## Skills
 
-Cada skill contém:
-- **SKILL.md** — template principal (prompt executado pelas CLIs)
-- Opcional: `references/`, `scripts/`, etc.
+### Próprias (em `skills/`)
 
-**Skills disponíveis:**
-1. **start-project** — Scaffold de documentação; consolida arquivos legados em `CLAUDE.md`
-2. **instalar-skills-agents-mcps** — Symlinks em `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/skills`
-3. **instalar-vitepress** — Setup VitePress para repositório-alvo
-4. **organizar-documentacao** — Reorganiza docs por Diátaxis (tutorial, how-to, reference, explanation)
-5. **organizar-commits** — Commits atômicos com Conventional Commits + branches stacked
-6. **interface-design** — Design system para dashboards, painéis admin, UIs SaaS
-7. **napkin** — Runbook operacional em `/napkin.md`
-8. **php** — Implementação PHP 8.3+ (Laravel, Symfony, Yii; strict types, PSR)
+- **start-project** — scaffold de docs; consolida arquivos legados em `CLAUDE.md`
+- **organizar-commits** — commits atômicos, Conventional Commits, stacked branches
+- **organizar-documentacao** — reorganiza docs por Diátaxis
+- **interface-design** — design system para dashboards/SaaS UIs
+- **napkin** — runbook operacional em `/napkin.md`
+- **php** — implementação PHP 8.3+ (Laravel/Symfony/Yii, strict types, PSR)
+- **revisao perssonalizada** — revisão Laravel com histórico em `memoria.md`
 
-### Estrutura `docs/` (Diátaxis)
+### Vendoradas (symlinks → `plugins/*/skills/`)
 
-- **`index.md`** — Landing page
-- **`README.md`** — Índice navegável (VitePress)
-- **`getting-started/`** — Tutoriais e install
-  - `instalacao.md` — Instruções de instalação
-  - `configuracao.md` — Configuração
-- **`skills/`** — Docs por skill
-- **`reference/`** — Comandos, convenções, padrões
-- **`changelog/`** — Releases e `unreleased.md`
+- **caveman**: caveman, caveman-commit, caveman-help, caveman-review, compress
+- **context-mode**: context-mode, context-mode-ops, ctx-doctor, ctx-insight, ctx-purge, ctx-stats, ctx-upgrade, diagnose, grill-me, grill-with-docs, improve-codebase-architecture, tdd
+- **code-review-graph**: build-graph, debug-issue, explore-codebase, refactor-safely, review-changes, review-delta, review-pr
 
-### Arquivos-chave
+`skills/.system` reservado pelo Codex — preservar.
 
-- **`napkin.md`** — Runbook. Leia antes de qualquer tarefa. **Repriorize a cada leitura.**
-- **`.vitepress/config.js`** — Config VitePress. **Após criar docs, SEMPRE configure navbar/sidebar aqui e links em índices** — documentação invisível = inútil.
+### Adicionar skill própria
 
-## Trabalhando com Skills
+1. `skills/<nome>/SKILL.md` com frontmatter `name`, `description`
+2. Reinstalar via `bash install.sh` (symlinks já apontam para `skills/`, sem etapa extra)
 
-### Adicionar skill novo
+### Editar skill
 
-1. Criar `skills/<nome>/SKILL.md` com frontmatter:
-   ```yaml
-   ---
-   name: nome-skill
-   description: "Descrição breve"
-   ---
-   ```
+Editar `SKILL.md` direto. É o prompt executado pela CLI.
 
-2. Documentação em `docs/skills/<nome>.md`
-3. Atualizar navbar/sidebar em `docs/.vitepress/config.js`
-4. Linkar em `docs/skills/index.md`
-5. Log em `docs/changelog/unreleased.md`
+## Configs (`config/`)
 
-### Editar prompts
+- **`GLOBAL.md`** — link em `~/.claude/CLAUDE.md`, `~/.codex/CODEX.md`, `~/.gemini/GEMINI.md`
+- **`claude-settings.json`** — link em `~/.claude/settings.json` (hooks, permissões)
+- **`codex-marketplace.json`** — link em `~/.codex/marketplace.json`
+- **`gemini-settings.json`** — link em `~/.gemini/settings.json`
+- **`caveman-config.json`** — link em `~/.config/caveman/config.json`
 
-Edite `SKILL.md` diretamente. É o que usuários veem ao invocar a skill.
+Editar arquivo em `config/` → afeta todas as instalações via symlink.
 
-## Convenções do Repositório
+## Agents (`agents/`)
+
+Arquivos `.md` independentes: `arch-reviewer`, `doc-generator`, `migration-reviewer`, `security-scanner`, `test-writer`. Linkados em `~/.claude/agents/`.
+
+## Plugins (`plugins/`)
+
+Cada subdiretório é um plugin com `skills/` + `hooks/` próprios. `install.sh` linka:
+- skills do plugin → `skills/<nome>` da raiz (já feito)
+- hooks → `~/.claude/hooks/`, `~/.codex/hooks/`, `~/.gemini/hooks/` via `link_hooks()`
+- hooks específicos por IA: `plugins/<plugin>/hooks/<claude|codex|gemini>/`
+
+`plugins/auto-wire-hooks.js` automatiza wiring quando hooks mudam.
+
+## Convenções
 
 - **Git**: 1 UL (user-level intent) = 1 commit = 1 branch (ver `skills/organizar-commits/SKILL.md`)
-- **Documentação**: Diátaxis (tutorial, how-to, reference, explanation)
-- **Idioma**: PT-BR para usuários; English para detalhes técnicos
+- **Idioma**: PT-BR para usuários; inglês para nomes técnicos
+- **Caveman ultra**: ativo por default (configurado em `config/caveman-config.json`)
 
 ## Regras de Domínio (de `napkin.md`)
 
-1. **Visibilidade de docs** — Após criar em `./docs`, configure navbar/sidebar em `docs/.vitepress/config.js` + links em índices. Invisível = inútil.
+1. **`skills/skills`** (symlink self-referencial) é artefato de erro — nunca commitar.
+2. **`~/.codex/skills/.system`** reservado pelo Codex — preservar ao instalar; criar links por skill, não substituir pasta inteira.
+3. **`README.md` raiz vs `docs/README.md`**: contextos diferentes. Raiz = mapa GitHub. Sem symlink forçado.
+4. **`start-project`** preserva `README.md`, `napkin.md`, `INSTRUCTIONS.md` na raiz; move outros `.md` para `docs/`; cria `docs/README.md` → `../README.md`. Não sobrescreve existentes.
+5. **`start-project`** termina apontando: rode `/init` em `Claude` ou `Copilot`.
+6. **`instalar-skills-agents-mcps`** (legado, hoje `install.sh`) → final aponta `start-project`.
 
-2. **Sincronização config VitePress** — Novo `.md` em `docs/` precisa estar em `docs/.vitepress/config.js` nav/sidebar.
+## Limitações Shell
 
-3. **Comportamento README.md** — `README.md` (root) = GitHub; `docs/README.md` = VitePress. Sem symlinks forçados.
+- `rg` pode estar ausente → usar `find`, `grep`, `sed`
+- `git rebase --show-current-operation` pode não existir → checar `.git/rebase-merge` / `.git/rebase-apply`
+- `napkin.md` é gitignored → não confiar em diff para sincronizar; ler arquivo direto
 
-4. **Flow start-project** — Ao rodar em repo-alvo:
-   - Preserve `README.md` e `napkin.md` na raiz
-   - Mova outros `.md` para `docs/`
-   - Crie symlinks relativos: `docs/README.md` → `../README.md` e `.github/copilot-instructions.md` → `../CLAUDE.md`
-   - Não sobrescreva existentes
+## Preferências do Usuário
 
-5. **Preservação Codex** — Ao instalar, preserve `~/.codex/skills/.system` (skills internas) e crie links por nome de skill.
+- Inglês: usuário aprendendo. Misturar PT+EN, gradualmente. Corrigir gentilmente quando errar.
+- Bundled PR único > muitos pequenos para refactors aqui.
+- Centralizar ativos reutilizáveis no repo; evitar contexto externo.
 
-6. **Limitações shell** — `rg` pode não estar; use `find`, `grep`, `sed`. `git rebase --show-current-operation` pode falhar; verifique `.git/rebase-merge` ou `.git/rebase-apply`.
+## Estado Atual
 
-7. **Encerramento skills** — Final deve apontar:
-   - **start-project**: "rode `/init` em Claude ou Gemini"
-   - **instalar-skills-agents-mcps**: "rode `start-project`"
+`docs/` **não existe** no repositório (referenciado por README.md mas ausente). VitePress não configurado. Se documentação navegável for necessária, criar via skill `organizar-documentacao` ou `instalar-vitepress` (skill desativada — ver `install.sh`).
 
-## Preferências-chave
+## Links
 
-- Consolide arquivos legados (AGENTS.md, .github/copilot-instructions.md) em CLAUDE.md, não separados.
-- Ativos reutilizáveis centralizados vs. instruções dependentes de contexto externo.
-- PR bundled único vs. muitos pequenos para refactors nesta área.
-- Docs descobríveis por VitePress config — não use referências indiretas.
+- **Runbook**: [napkin.md](napkin.md) (gitignored, local)
+- **Instalador**: [install.sh](install.sh) / [install.bat](install.bat)
+- **Configs globais**: [config/GLOBAL.md](config/GLOBAL.md)
 
-## Rodando docs localmente
-
-```bash
-npm install
-npm run docs:dev
-```
-
-Visite `http://localhost:5173`. Hot-reload em `.md`.
-
-## Links de Referência
-
-- **Entry point**: [docs/index.md](docs/index.md)
-- **Install**: [docs/getting-started/instalacao.md](docs/getting-started/instalacao.md)
-- **Changelog (unreleased)**: [docs/changelog/unreleased.md](docs/changelog/unreleased.md)
-- **Convenções**: [docs/reference/convencoes.md](docs/reference/convencoes.md)
-- **Runbook operacional**: [napkin.md](napkin.md)
-
-[//]: # (DR:4,explanation,0.85)
+[//]: # "DR:5,explanation,0.90"

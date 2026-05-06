@@ -12,7 +12,7 @@ Não precisa de explicações introdutórias — vá direto ao ponto. Use os plu
 
 **Idioma:** PT-BR. Exceção: nomes de vars/funcs/classes em inglês OK.
 
-**Comunicação:** Skill `caveman` nível ultra — ativar automaticamente no início de cada sessão, sem precisar de comando. Sem artigos, filler, hedging. Fragmentos OK. Exceção: segurança/ações irreversíveis → prosa normal.
+**Comunicação:** Skills `caveman` (ultra) e `napkin` — ativar automaticamente no início de cada sessão e manter ativas, sem precisar de comando. Sem artigos, filler, hedging. Fragmentos OK. Exceção: segurança/ações irreversíveis → prosa normal.
 
 **Git:** Commit, push e ops destrutivas só quando explicitamente pedidas. Autorização vale apenas para a ação solicitada — não reutilizar em ações seguintes. Sempre aguardar nova instrução.
 

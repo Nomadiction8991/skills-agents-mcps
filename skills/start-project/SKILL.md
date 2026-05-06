@@ -23,6 +23,7 @@ Repo-local PT-BR (operacional).
 | Destino | Origem |
 |---------|--------|
 | `AGENTS.md` | `CLAUDE.md` |
+| `GEMINI.md` | `CLAUDE.md` |
 
 1. Existe → `rm <destino>`
 2. `ln -s {origem} {destino}`
