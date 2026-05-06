@@ -1,0 +1,22 @@
+{
+  "name": "claude-code-optimizer",
+  "owner": {
+    "name": "Nadim Tuhin"
+  },
+  "metadata": {
+    "description": "Stop wasting Claude Code's context on old docs",
+    "version": "1.4.0"
+  },
+  "plugins": [
+    {
+      "name": "claude-code-optimizer",
+      "source": "./",
+      "description": "Optimizes Claude Code context by structuring docs.",
+      "version": "1.4.0",
+      "author": {
+        "name": "Nadim Tuhin"
+      },
+      "category": "development"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "claude-code-optimizer",
+  "plugins": [
+    {
+      "name": "claude-code-optimizer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/claude-code-optimizer"
+      },
+      "category": "Development"
+    }
+  ]
+}

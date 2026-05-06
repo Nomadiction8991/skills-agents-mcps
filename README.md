@@ -1,6 +1,6 @@
 # skills-agents-mcps
 
-Base compartilhada de skills operacionais para `Codex`, `Claude` e `Copilot`.
+Base compartilhada de skills operacionais para `Codex`, `Claude` e `Gemini`.
 Este README e um mapa curto do repositorio e aponta para a documentacao detalhada em `docs/`.
 
 ## Resumo do sistema
@@ -33,9 +33,15 @@ Este README e um mapa curto do repositorio e aponta para a documentacao detalhad
 - `organizar-commits`
 - `php`
 
+## Instalação Rápida
+
+1. Clone este repositório.
+2. Execute o instalador unificado (Linux/macOS: `bash install.sh` | Windows: `install.bat`).
+3. O script detecta automaticamente `Claude`, `Codex` e `Gemini` e configura os symlinks, plugins e hooks.
+
 ## Fluxo recomendado
 
-1. Abra [Instalacao compartilhada](docs/INSTALL.md).
-2. Configure `codex`, `claude` e `copilot` para usar a mesma pasta `skills` deste clone.
-3. Depois execute a skill `start-project` no repositorio em que voce vai trabalhar.
+1. Execute o instalador unificado na raiz do repo.
+2. Configure seus agentes para usar a pasta `skills` deste clone (feito automaticamente pelo instalador).
+3. Use a skill `start-project` no repositório em que você vai trabalhar.
 4. Consulte o [changelog unreleased](docs/changelog/unreleased.md) antes de reorganizar skills ou commits.

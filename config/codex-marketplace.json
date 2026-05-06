@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    {"name": "caveman", "source": {"source": "local", "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/caveman/"}},
+    {"name": "claude-code-optimizer", "source": {"source": "local", "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/claude-code-optimizer/"}},
+    {"name": "code-review-graph", "source": {"source": "local", "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/code-review-graph/"}},
+    {"name": "context-mode", "source": {"source": "local", "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/"}},
+    {"name": "rtk-ai", "source": {"source": "local", "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/rtk-ai/"}}
+  ]
+}

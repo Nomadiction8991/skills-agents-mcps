@@ -4,7 +4,9 @@
 
 ## Usuário
 
-Desenvolvedor com conhecimento básico-intermediário. Familiarizado com: Git, Docker, terminal Linux, ferramentas de IA (Claude, Codex, Copilot). Não precisa de explicações introdutórias sobre esses temas — vá direto ao ponto.
+Desenvolvedor com conhecimento básico-intermediário. Familiarizado com: Git, Docker, terminal Linux, ferramentas de IA (Claude, Codex, Gemini).
+Plugins Instalados: `caveman` (ultra), `claude-code-optimizer`, `context-mode`, `code-review-graph`, `rtk-ai`.
+Não precisa de explicações introdutórias — vá direto ao ponto. Use os plugins instalados para otimizar contexto, revisar código e gerenciar a sessão.
 
 ## Regras Gerais
 

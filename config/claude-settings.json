@@ -1,0 +1,237 @@
+{
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "opus[1m]",
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "DIFFICULTY_LOG_FILE=\"/home/weverton/.config/Code/User/globalStorage/michaelellan.smoking-tokens/difficulty-log.jsonl\" node \"/home/weverton/.vscode/extensions/michaelellan.smoking-tokens-0.1.8/dist/hook/logger.js\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/.claude/hooks/caveman-activate.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading caveman mode..."
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/sessionstart.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "code-review-graph status",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/.claude/hooks/caveman-mode-tracker.js\"",
+            "timeout": 5,
+            "statusMessage": "Tracking caveman mode..."
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/userpromptsubmit.mjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|Read|Write|Edit|NotebookEdit|Glob|Grep|TodoWrite|TaskCreate|TaskUpdate|EnterPlanMode|ExitPlanMode|Skill|Agent|AskUserQuestion|EnterWorktree|mcp__",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/posttooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "EnterWorktree",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "code-review-graph build >/dev/null 2>&1 &"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "code-review-graph update --skip-flows",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/precompact.mjs\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_context-mode_context-mode__ctx_execute",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_context-mode_context-mode__ctx_execute_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/home/weverton/.claude/hooks/caveman-statusline.sh\""
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "caveman@caveman": true,
+    "claude-code-optimizer@claude-code-optimizer": true,
+    "code-review-graph@code-review-graph": true,
+    "context-mode@context-mode": true,
+    "rtk-ai@rtk-ai": true
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "directory",
+        "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/caveman"
+      }
+    },
+    "claude-code-optimizer": {
+      "source": {
+        "source": "directory",
+        "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/claude-code-optimizer"
+      }
+    },
+    "code-review-graph": {
+      "source": {
+        "source": "directory",
+        "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/code-review-graph"
+      }
+    },
+    "context-mode": {
+      "source": {
+        "source": "directory",
+        "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode"
+      }
+    },
+    "rtk-ai": {
+      "source": {
+        "source": "directory",
+        "path": "/home/weverton/Documentos/Github/skills-agents-mcps/plugins/rtk-ai"
+      }
+    }
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark",
+  "skipAutoPermissionPrompt": true
+}

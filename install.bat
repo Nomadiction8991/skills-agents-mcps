@@ -2,7 +2,6 @@
 setlocal EnableDelayedExpansion
 
 set "REPO_ROOT=%~dp0"
-:: Remove trailing backslash
 if "%REPO_ROOT:~-1%"=="\" set "REPO_ROOT=%REPO_ROOT:~0,-1%"
 
 :: Validate: must be inside skills-agents-mcps
@@ -12,13 +11,69 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo Criando symlinks...
+:: Detect tools
+set "HAS_CLAUDE=0"
+where claude >nul 2>nul && set "HAS_CLAUDE=1"
+set "HAS_CODEX=0"
+if exist "%USERPROFILE%\.codex" set "HAS_CODEX=1"
+set "HAS_GEMINI=0"
+if exist "%USERPROFILE%\.gemini" set "HAS_GEMINI=1"
 
-call :link "%REPO_ROOT%\skills"           "%USERPROFILE%\.claude\skills"
-call :link "%REPO_ROOT%\skills"           "%USERPROFILE%\.codex\skills"
-call :link "%REPO_ROOT%\agents"           "%USERPROFILE%\.claude\agents"
-call :link "%REPO_ROOT%\config\GLOBAL.md" "%USERPROFILE%\.claude\CLAUDE.md"
-call :link "%REPO_ROOT%\config\GLOBAL.md" "%USERPROFILE%\.codex\AGENTS.md"
+echo === Detectando Ferramentas ===
+if "%HAS_CLAUDE%"=="1" (echo   [OK] Claude Code detectado) else (echo   [--] Claude Code nao encontrado)
+if "%HAS_CODEX%"=="1" (echo   [OK] Codex detectado) else (echo   [--] Codex nao encontrado)
+if "%HAS_GEMINI%"=="1" (echo   [OK] Gemini detectado) else (echo   [--] Gemini nao encontrado)
+echo.
+
+echo === Criando Symlinks ===
+
+if "%HAS_CLAUDE%"=="1" (
+    echo Configurando Claude...
+    call :link "%REPO_ROOT%\skills"                   "%USERPROFILE%\.claude\skills"
+    call :link "%REPO_ROOT%\agents"                   "%USERPROFILE%\.claude\agents"
+    call :link "%REPO_ROOT%\config\GLOBAL.md"           "%USERPROFILE%\.claude\CLAUDE.md"
+    call :link "%REPO_ROOT%\config\claude-settings.json" "%USERPROFILE%\.claude\settings.json"
+    call :link "%REPO_ROOT%\config\caveman-config.json" "%APPDATA%\caveman\config.json"
+    call :link "%REPO_ROOT%\plugins\caveman\hooks"      "%USERPROFILE%\.claude\hooks"
+)
+
+if "%HAS_CODEX%"=="1" (
+    echo Configurando Codex...
+    call :link "%REPO_ROOT%\skills"                   "%USERPROFILE%\.codex\skills"
+    call :link "%REPO_ROOT%\config\GLOBAL.md"           "%USERPROFILE%\.codex\AGENTS.md"
+    call :link "%REPO_ROOT%\config\codex-marketplace.json" "%USERPROFILE%\.codex\marketplace.json"
+)
+
+if "%HAS_GEMINI%"=="1" (
+    echo Configurando Gemini...
+    call :link "%REPO_ROOT%\skills"                   "%USERPROFILE%\.gemini\skills"
+    call :link "%REPO_ROOT%\agents"                   "%USERPROFILE%\.gemini\agents"
+    call :link "%REPO_ROOT%\config\GLOBAL.md"           "%USERPROFILE%\.gemini\GEMINI.md"
+    call :link "%REPO_ROOT%\config\gemini-settings.json" "%USERPROFILE%\.gemini\settings.json"
+)
+echo.
+
+if "%HAS_CLAUDE%"=="1" (
+    echo === Instalando Plugins (Claude Code) ===
+    for /D %%P in ("%REPO_ROOT%\plugins\*") do (
+        set "name=%%~nxP"
+        if exist "%%P\.claude-plugin\marketplace.json" (
+            echo   ^> !name!
+            claude plugin marketplace add "%%P" 2>nul
+            claude plugin install "!name!" 2>nul || claude plugin enable "!name!" 2>nul
+
+            if exist "%%P\install.bat" (
+                if "!name!" neq "install.bat" (
+                    echo     Executando instalador interno de !name!...
+                    call "%%P\install.bat"
+                )
+            )
+        )
+    )
+    echo.
+    echo === Wiring Plugin Hooks ===
+    node "%REPO_ROOT%\plugins\auto-wire-hooks.js"
+)
 
 echo.
 echo OK Instalacao concluida. Proximo passo: /start-project em qualquer projeto.
@@ -27,13 +82,10 @@ exit /b 0
 :link
 set "SRC=%~1"
 set "DST=%~2"
-:: Create parent directory if needed
 for %%D in ("%DST%") do if not exist "%%~dpD" mkdir "%%~dpD"
-:: Remove existing link or file
 if exist "%DST%" (
     del /f /q "%DST%" 2>nul || rmdir /s /q "%DST%" 2>nul
 )
-:: Detect if source is a directory or file
 if exist "%SRC%\" (
     mklink /D "%DST%" "%SRC%" >nul
 ) else (

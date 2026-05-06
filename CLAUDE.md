@@ -4,7 +4,7 @@ Guia para Claude Code (claude.ai/code) ao trabalhar com código neste repositór
 
 ## Visão Geral
 
-Repositório de **skills reutilizáveis** para Claude, Copilot e Codex. **NÃO é produção** — é documentação operacional com workflows, padrões e guias para assistentes de IA e desenvolvedores.
+Repositório de **skills reutilizáveis** para Claude, Codex e Gemini. **NÃO é produção** — é documentação operacional com workflows, padrões e guias para assistentes de IA e desenvolvedores.
 
 - **`skills/`** — definições executadas pelas CLIs
 - **`docs/`** — documentação VitePress para usuários
@@ -35,7 +35,7 @@ Cada skill contém:
 
 **Skills disponíveis:**
 1. **start-project** — Scaffold de documentação; consolida arquivos legados em `CLAUDE.md`
-2. **instalar-skills-agents-mcps** — Symlinks em `~/.claude/skills`, `~/.copilot/skills`, `~/.codex/skills`
+2. **instalar-skills-agents-mcps** — Symlinks em `~/.claude/skills`, `~/.codex/skills`, `~/.gemini/skills`
 3. **instalar-vitepress** — Setup VitePress para repositório-alvo
 4. **organizar-documentacao** — Reorganiza docs por Diátaxis (tutorial, how-to, reference, explanation)
 5. **organizar-commits** — Commits atômicos com Conventional Commits + branches stacked
@@ -105,7 +105,7 @@ Edite `SKILL.md` diretamente. É o que usuários veem ao invocar a skill.
 6. **Limitações shell** — `rg` pode não estar; use `find`, `grep`, `sed`. `git rebase --show-current-operation` pode falhar; verifique `.git/rebase-merge` ou `.git/rebase-apply`.
 
 7. **Encerramento skills** — Final deve apontar:
-   - **start-project**: "rode `/init` em Claude ou Copilot"
+   - **start-project**: "rode `/init` em Claude ou Gemini"
    - **instalar-skills-agents-mcps**: "rode `start-project`"
 
 ## Preferências-chave

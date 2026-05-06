@@ -1,0 +1,13 @@
+{
+  "name": "rtk-ai",
+  "plugins": [
+    {
+      "name": "rtk-ai",
+      "source": {
+        "source": "local",
+        "path": "./plugins/rtk-ai"
+      },
+      "category": "Development"
+    }
+  ]
+}

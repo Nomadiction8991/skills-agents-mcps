@@ -1,0 +1,13 @@
+{
+  "name": "context-mode",
+  "plugins": [
+    {
+      "name": "context-mode",
+      "source": {
+        "source": "local",
+        "path": "./plugins/context-mode"
+      },
+      "category": "Development"
+    }
+  ]
+}
