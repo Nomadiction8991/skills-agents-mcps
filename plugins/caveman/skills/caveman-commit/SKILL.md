@@ -19,9 +19,8 @@ Write commit messages terse and exact. Conventional Commits format. No fluff. Wh
 - No trailing period
 - Match project convention for capitalization after the colon
 
-**Body (only if needed):**
-- Skip entirely when subject is self-explanatory
-- Add body only for: non-obvious *why*, breaking changes, migration notes, linked issues
+**Body (Required):**
+- Always include a body explaining the "why" and intent.
 - Wrap at 72 chars
 - Bullets `-` not `*`
 - Reference issues/PRs at end: `Closes #42`, `Refs #17`

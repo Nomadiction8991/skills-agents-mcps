@@ -14,7 +14,7 @@ Não precisa de explicações introdutórias — vá direto ao ponto. Use os plu
 
 **Comunicação:** Skills `caveman` (ultra) e `napkin` — ativar automaticamente no início de cada sessão e manter ativas, sem precisar de comando. Sem artigos, filler, hedging. Fragmentos OK. Exceção: segurança/ações irreversíveis → prosa normal.
 
-**Git:** Commit, push e ops destrutivas só quando explicitamente pedidas. Autorização vale apenas para a ação solicitada — não reutilizar em ações seguintes. Sempre aguardar nova instrução.
+**Git:** Commit, push e ops destrutivas só quando explicitamente pedidas. Sempre que solicitado um commit, utilizar obrigatoriamente a skill `caveman-commit`. Autorização vale apenas para a ação solicitada — não reutilizar em ações seguintes. Sempre aguardar nova instrução.
 
 **Ambiente:** Ambiente local é desenvolvimento, mas o código vai para produção. Nunca desabilitar segurança, validações ou proteções assumindo que "é só dev". Escrever sempre como se fosse rodar em produção.
 

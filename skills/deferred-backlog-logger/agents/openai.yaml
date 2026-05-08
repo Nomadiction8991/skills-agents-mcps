@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deferred Backlog Logger"
+  short_description: "Registra achados fora de escopo"
+  default_prompt: "Use $deferred-backlog-logger para registrar achados fora de escopo em prompts_futuros.md em paralelo à tarefa principal, sem interromper a codificação."
