@@ -29,25 +29,31 @@ const pluginDirs = fs.readdirSync(PLUGINS_DIR).filter(f => fs.statSync(path.join
             const pluginRoot = path.join(PLUGINS_DIR, plugin);
 
             const hooksSource = hooksConfig.hooks || hooksConfig;
+            const isGemini = settingsPath.includes('.gemini');
 
             Object.keys(hooksSource).forEach(eventType => {
                 if (eventType === 'description') return;
+                
+                // Gemini only supports certain hook events
+                if (isGemini && !['SessionStart', 'Stop'].includes(eventType)) {
+                    // console.log(`  Skipping event ${eventType} for Gemini (unsupported).`);
+                    return;
+                }
+
                 if (!settings.hooks[eventType]) settings.hooks[eventType] = [];
+
+                // Remove existing hooks from THIS plugin to avoid duplicates/stale commands
+                settings.hooks[eventType] = settings.hooks[eventType].filter(existing => {
+                    const str = JSON.stringify(existing);
+                    return !str.includes(pluginRoot);
+                });
 
                 const hookGroups = Array.isArray(hooksSource[eventType]) ? hooksSource[eventType] : [];
                 hookGroups.forEach(hookGroup => {
                     const processedHookGroup = JSON.parse(JSON.stringify(hookGroup).replace(/\$\{CLAUDE_PLUGIN_ROOT\}/g, pluginRoot));
                     
-                    const alreadyExists = settings.hooks[eventType].some(existing => 
-                        JSON.stringify(existing) === JSON.stringify(processedHookGroup)
-                    );
-
-                    if (!alreadyExists) {
-                        settings.hooks[eventType].push(processedHookGroup);
-                        console.log(`  Added ${eventType} hook group.`);
-                    } else {
-                        console.log(`  ${eventType} hook group already exists.`);
-                    }
+                    settings.hooks[eventType].push(processedHookGroup);
+                    console.log(`  Synced ${eventType} hook group.`);
                 });
             });
         }

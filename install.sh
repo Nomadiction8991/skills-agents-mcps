@@ -28,6 +28,24 @@ echo "=== Detectando Ferramentas ==="
 [ $HAS_GEMINI -eq 1 ] && echo "  [OK] Gemini detectado" || echo "  [--] Gemini não encontrado"
 echo ""
 
+echo "=== Instalando Dependências de Plugins ==="
+# 1. code-review-graph (Python)
+if command -v python3 >/dev/null 2>&1; then
+    echo "  → Configurando dependências Python (code-review-graph)..."
+    python3 -m pip install -e "$REPO_ROOT/plugins/code-review-graph" --quiet || \
+    python3 -m pip install mcp fastmcp tree-sitter tree-sitter-language-pack networkx watchdog --quiet || \
+    echo "    aviso: falha ao instalar dependências python. Verifique o pip."
+else
+    echo "  [!] Python3 não encontrado. O Grafo de Conhecimento pode falhar."
+fi
+
+# 2. context-mode (Node)
+if command -v npm >/dev/null 2>&1; then
+    echo "  → Configurando dependências Node (context-mode)..."
+    (cd "$REPO_ROOT/plugins/context-mode" && npm install --quiet) || echo "    aviso: falha no npm install do context-mode."
+fi
+echo ""
+
 if [ $HAS_CLAUDE -eq 1 ] || [ $HAS_CODEX -eq 1 ] || [ $HAS_GEMINI -eq 1 ]; then
   link "$REPO_ROOT/config/caveman-config.json" "$HOME/.config/caveman/config.json"
 fi
@@ -82,7 +100,12 @@ fi
 if [ $HAS_GEMINI -eq 1 ]; then
   echo "Configurando Gemini..."
   link "$REPO_ROOT/skills"                   "$HOME/.gemini/skills"
-  link "$REPO_ROOT/agents"                   "$HOME/.gemini/agents"
+  # Gemini usa nomes de ferramentas diferentes, usamos a pasta gemini/
+  if [ -d "$REPO_ROOT/agents/gemini" ]; then
+    link "$REPO_ROOT/agents/gemini"            "$HOME/.gemini/agents"
+  else
+    link "$REPO_ROOT/agents"                   "$HOME/.gemini/agents"
+  fi
   link "$REPO_ROOT/config/GLOBAL.md"           "$HOME/.gemini/GEMINI.md"
   link "$REPO_ROOT/config/gemini-settings.json" "$HOME/.gemini/settings.json"
   link_hooks "gemini" "$HOME/.gemini/hooks"

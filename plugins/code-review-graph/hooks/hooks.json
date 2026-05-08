@@ -6,8 +6,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "code-review-graph status",
-            "timeout": 10
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/code-review-graph-hook.sh\" status",
+            "timeout": 30000
           }
         ]
       }
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "code-review-graph build >/dev/null 2>&1 &"
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/code-review-graph-hook.sh\" build >/dev/null 2>&1 &"
           }
         ]
       },
@@ -27,8 +27,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "code-review-graph update --skip-flows",
-            "timeout": 30
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/code-review-graph-hook.sh\" update --skip-flows",
+            "timeout": 30000
           }
         ]
       }

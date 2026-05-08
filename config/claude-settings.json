@@ -26,29 +26,29 @@
         ]
       },
       {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/home/weverton/.claude/hooks/context-mode-cache-heal.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/code-review-graph/hooks/code-review-graph-hook.sh\" status",
+            "timeout": 30000
+          }
+        ]
+      },
+      {
         "matcher": "",
         "hooks": [
           {
             "type": "command",
             "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/sessionstart.mjs\""
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "code-review-graph status",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "\"/home/weverton/.claude/hooks/context-mode-cache-heal.mjs\""
           }
         ]
       }
@@ -76,20 +76,11 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Bash|Read|Write|Edit|NotebookEdit|Glob|Grep|TodoWrite|TaskCreate|TaskUpdate|EnterPlanMode|ExitPlanMode|Skill|Agent|AskUserQuestion|EnterWorktree|mcp__",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/posttooluse.mjs\""
-          }
-        ]
-      },
-      {
         "matcher": "EnterWorktree",
         "hooks": [
           {
             "type": "command",
-            "command": "code-review-graph build >/dev/null 2>&1 &"
+            "command": "bash \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/code-review-graph/hooks/code-review-graph-hook.sh\" build >/dev/null 2>&1 &"
           }
         ]
       },
@@ -98,8 +89,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "code-review-graph update --skip-flows",
-            "timeout": 30
+            "command": "bash \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/code-review-graph/hooks/code-review-graph-hook.sh\" update --skip-flows",
+            "timeout": 30000
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Read|Write|Edit|NotebookEdit|Glob|Grep|TodoWrite|TaskCreate|TaskUpdate|EnterPlanMode|ExitPlanMode|Skill|Agent|AskUserQuestion|EnterWorktree|mcp__",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/posttooluse.mjs\""
           }
         ]
       }
@@ -247,8 +247,8 @@
       }
     }
   },
+  "effortLevel": "low",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "skipAutoPermissionPrompt": true,
-  "effortLevel": "low"
+  "skipAutoPermissionPrompt": true
 }

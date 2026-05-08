@@ -2,13 +2,11 @@
 name: "arch-reviewer"
 description: "Use this agent when structural or architectural changes have been made to the codebase and need review before merging. This includes changes to module boundaries, introduction of new abstractions, modifications to API contracts, dependency changes, or any refactoring that touches multiple files or layers of the system.\n\n<example>\nContext: The user has just implemented a new feature that introduces a new service layer and modifies several existing modules.\nuser: \"I've finished implementing the new payment processing feature. It touches the order module, adds a new PaymentService, and updates the API controllers.\"\nassistant: \"Great work! Let me launch the arch-reviewer agent to analyze the structural changes before we consider this ready to merge.\"\n<commentary>\nSince significant structural changes were made involving new abstractions, module interactions, and API changes, use the arch-reviewer agent to analyze coupling, SRP violations, and consistency with existing patterns.\n</commentary>\n</example>\n\n<example>\nContext: A developer has refactored a large class into multiple smaller ones and wants to verify the architecture is sound.\nuser: \"I split the UserManager class into UserRepository, UserValidator, and UserNotificationService. Can you check if this looks good?\"\nassistant: \"I'll use the arch-reviewer agent to evaluate the architectural decisions in this refactoring.\"\n<commentary>\nA structural refactoring was performed. The arch-reviewer agent should analyze whether the new boundaries are appropriate, check for SRP violations, and ensure consistency with the rest of the codebase.\n</commentary>\n</example>\n\n<example>\nContext: A PR is being prepared that introduces a new design pattern or changes how modules communicate.\nuser: \"Before I open this PR, can you review the architecture? I introduced an event-driven approach for notifications.\"\nassistant: \"Absolutely. I'll invoke the arch-reviewer agent to check the architectural consistency and quality of this change.\"\n<commentary>\nNew patterns are being introduced. The arch-reviewer should verify the pattern is applied consistently, check for circular dependencies, and flag any inconsistencies with existing code.\n</commentary>\n</example>"
 tools:
-  - Read
-  - TaskStop
-  - WebFetch
-  - WebSearch
-  - mcp__ide__executeCode
-  - mcp__ide__getDiagnostics
-  - Bash
+  - read_file
+  
+  - web_fetch
+  - google_web_search
+  - run_shell_command
 model: sonnet
 ---
 

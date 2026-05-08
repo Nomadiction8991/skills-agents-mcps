@@ -25,6 +25,26 @@ if "%HAS_CODEX%"=="1" (echo   [OK] Codex detectado) else (echo   [--] Codex nao 
 if "%HAS_GEMINI%"=="1" (echo   [OK] Gemini detectado) else (echo   [--] Gemini nao encontrado)
 echo.
 
+echo === Instalando Dependencias ===
+:: 1. code-review-graph
+where python >nul 2>nul
+if %errorlevel% equ 0 (
+    echo   -^> Configurando Python ^(code-review-graph^)...
+    python -m pip install -e "%REPO_ROOT%\plugins\code-review-graph" --quiet 2>nul
+) else (
+    echo   [!] Python nao encontrado.
+)
+
+:: 2. context-mode
+where npm >nul 2>nul
+if %errorlevel% equ 0 (
+    echo   -^> Configurando Node ^(context-mode^)...
+    pushd "%REPO_ROOT%\plugins\context-mode"
+    call npm install --quiet 2>nul
+    popd
+)
+echo.
+
 echo === Criando Symlinks ===
 
 if "%HAS_CLAUDE%"=="1" (

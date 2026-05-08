@@ -2,11 +2,11 @@
 name: "security-scanner"
 description: "Use this agent when code changes touch authentication, authorization, payments, user data, or any security-sensitive area. Trigger before commits that modify login flows, session handling, database queries, API endpoints, third-party integrations, configuration files, or dependency lists. Also use when adding new input fields, output rendering, or data serialization logic.\n\n<example>\nContext: The user just wrote a login endpoint that accepts username and password and queries the database.\nuser: \"I just implemented the login endpoint in auth/login.js, can you check if it's secure?\"\nassistant: \"I'll use the security-scanner agent to audit the new login endpoint for vulnerabilities.\"\n<commentary>\nSince authentication code was written, proactively use the security-scanner agent to check for SQL injection, auth flaws, and secret exposure before any commit.\n</commentary>\n</example>\n\n<example>\nContext: The user added a payment processing module.\nuser: \"Added Stripe integration in payments/checkout.js\"\nassistant: \"Let me launch the security-scanner agent to review the payment integration for security vulnerabilities before this gets committed.\"\n<commentary>\nPayment code is extremely sensitive; use the security-scanner agent immediately to catch any exposed secrets, insecure configurations, or missing validations.\n</commentary>\n</example>\n\n<example>\nContext: The user updated dependencies in package.json.\nuser: \"Updated several npm packages to their latest versions.\"\nassistant: \"I'll run the security-scanner agent to check the updated dependencies for known CVEs and any configuration changes that may introduce vulnerabilities.\"\n<commentary>\nDependency updates can introduce CVEs or breaking security changes; use the security-scanner agent to audit them.\n</commentary>\n</example>"
 tools:
-  - Read
-  - TaskStop
-  - WebFetch
-  - WebSearch
-  - Bash
+  - read_file
+  
+  - web_fetch
+  - google_web_search
+  - run_shell_command
 model: sonnet
 ---
 

@@ -2,11 +2,11 @@
 name: "migration-reviewer"
 description: "Use this agent when a developer has written or modified database migration files and needs a thorough audit before running them in production. Trigger this agent proactively whenever new migration files are created or changed.\n\n<example>\nContext: The user is creating a migration-reviewer agent that should be called after migration files are written or modified.\nuser: \"I just created a new migration to add a column to the users table and drop the old_email column\"\nassistant: \"I'll create that migration file for you.\"\n<function call omitted for brevity>\n<commentary>\nSince a migration file was created that involves potentially destructive operations (dropping a column), proactively launch the migration-reviewer agent to audit it before it runs in production.\n</commentary>\nassistant: \"Now let me use the migration-reviewer agent to audit this migration before you run it in production.\"\n</example>\n\n<example>\nContext: User has a set of pending migration files they want to validate.\nuser: \"Can you review my migrations in db/migrate before I push to staging?\"\nassistant: \"I'm going to use the migration-reviewer agent to perform a full audit of your migration files.\"\n<commentary>\nThe user explicitly asked for a migration review, so launch the migration-reviewer agent to analyze all relevant migration files for rollback safety, data loss risk, locking issues, and production impact.\n</commentary>\n</example>\n\n<example>\nContext: User is refactoring a large table schema.\nuser: \"I need to rename the `user_id` column to `account_id` in the orders table which has 50 million rows.\"\nassistant: \"Let me write that migration for you.\"\n<function call omitted for brevity>\n<commentary>\nRenaming a column on a large table is a high-risk operation that could cause locks and downtime. Proactively use the migration-reviewer agent to flag the risks and suggest a safe multi-step approach.\n</commentary>\nassistant: \"This involves a large table. Let me use the migration-reviewer agent to audit the migration and suggest a safe zero-downtime strategy.\"\n</example>"
 tools:
-  - Bash
-  - Read
-  - TaskStop
-  - WebFetch
-  - WebSearch
+  - run_shell_command
+  - read_file
+  
+  - web_fetch
+  - google_web_search
 model: sonnet
 ---
 

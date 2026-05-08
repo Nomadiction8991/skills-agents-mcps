@@ -2,14 +2,14 @@
 name: "doc-generator"
 description: "Use this agent when you need to generate or update project documentation after implementing new features, modifying existing functionality, or preparing a release. This includes writing or updating README files, generating API documentation, creating changelog entries, adding or updating docstrings/comments in code, and documenting environment variables.\n\n<example>\nContext: The user has just implemented a new authentication endpoint and wants to document it.\nuser: \"I just added a POST /auth/login endpoint that accepts email and password and returns a JWT token\"\nassistant: \"Great, let me use the doc-generator agent to create comprehensive documentation for this new endpoint.\"\n<commentary>\nSince a new API endpoint was implemented, use the Agent tool to launch the doc-generator agent to document the endpoint, update the README, and generate a changelog entry.\n</commentary>\n</example>\n\n<example>\nContext: The user just finished implementing a new feature and wants all documentation updated.\nuser: \"I finished implementing the user profile feature with avatar upload support\"\nassistant: \"I'll now use the doc-generator agent to update the README, add docstrings to the new functions, document any new environment variables, and generate a changelog entry for this feature.\"\n<commentary>\nSince a significant feature was completed, use the Agent tool to launch the doc-generator agent to produce all relevant documentation updates.\n</commentary>\n</example>\n\n<example>\nContext: The user is preparing a new release and needs a changelog.\nuser: \"We're releasing version 2.3.0 today, can you update the changelog?\"\nassistant: \"I'll launch the doc-generator agent to generate a proper semver changelog entry for version 2.3.0.\"\n<commentary>\nSince a release is being prepared, use the Agent tool to launch the doc-generator agent to produce the changelog entry following semver conventions.\n</commentary>\n</example>"
 tools:
-  - Bash
-  - Read
-  - TaskStop
-  - WebFetch
-  - WebSearch
-  - Edit
-  - NotebookEdit
-  - Write
+  - run_shell_command
+  - read_file
+  
+  - web_fetch
+  - google_web_search
+  - replace
+  
+  - write_file
 model: haiku
 ---
 

@@ -2,14 +2,14 @@
 name: "test-writer"
 description: "Use this agent when new code has been implemented, a bug has been fixed, or existing code has been modified and test coverage needs to be created or updated. It should be triggered after implementing features or correcting bugs to ensure the new or changed code is properly covered by unit tests, integration tests, and edge case handling.\n\n<example>\nContext: The user asked to implement a new feature and the assistant just finished writing the implementation code.\nuser: \"Create a function that validates CPF numbers\"\nassistant: \"Here is the implementation of the CPF validation function: [implementation written]\"\n<commentary>\nSince a new function was implemented, use the Agent tool to launch the test-writer agent to generate tests covering happy paths, edge cases, and invalid inputs.\n</commentary>\nassistant: \"Now let me use the test-writer agent to generate tests for this new function.\"\n</example>\n\n<example>\nContext: The user reported a bug and the assistant fixed it.\nuser: \"The discount calculation is wrong when the user has a coupon and the cart total is zero\"\nassistant: \"I found and fixed the bug in the discount calculation logic: [fix applied]\"\n<commentary>\nSince a bug was fixed, use the Agent tool to launch the test-writer agent to create regression tests that cover the bug scenario and related edge cases.\n</commentary>\nassistant: \"Let me now use the test-writer agent to write regression tests for this bug fix.\"\n</example>\n\n<example>\nContext: The user refactored a module and wants to ensure behavior is preserved.\nuser: \"Refactor the authentication module to use the new JWT library\"\nassistant: \"I've refactored the authentication module: [refactoring done]\"\n<commentary>\nSince a critical module was refactored, use the Agent tool to launch the test-writer agent to verify existing tests still pass and add coverage for any new behavior introduced.\n</commentary>\nassistant: \"Now I'll use the test-writer agent to review and update tests for the refactored authentication module.\"\n</example>"
 tools:
-  - Read
-  - TaskStop
-  - WebFetch
-  - WebSearch
-  - Bash
-  - Edit
-  - NotebookEdit
-  - Write
+  - read_file
+  
+  - web_fetch
+  - google_web_search
+  - run_shell_command
+  - replace
+  
+  - write_file
 model: sonnet
 ---
 
