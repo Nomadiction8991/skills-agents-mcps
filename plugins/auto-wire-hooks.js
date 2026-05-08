@@ -19,7 +19,17 @@ TARGETS.forEach(target => {
     const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
     if (!settings.hooks) settings.hooks = {};
 
-const pluginDirs = fs.readdirSync(PLUGINS_DIR).filter(f => fs.statSync(path.join(PLUGINS_DIR, f)).isDirectory());
+    // Map Claude hooks to Gemini equivalents
+    const GEMINI_HOOK_MAP = {
+        'PreToolUse': 'BeforeTool',
+        'PostToolUse': 'AfterTool',
+        'SessionStart': 'SessionStart',
+        'UserPromptSubmit': 'BeforeAgent',
+        'PreCompact': 'PreCompress',
+        'Stop': 'Stop'
+    };
+
+    const pluginDirs = fs.readdirSync(PLUGINS_DIR).filter(f => fs.statSync(path.join(PLUGINS_DIR, f)).isDirectory());
 
     pluginDirs.forEach(plugin => {
         const hooksJsonPath = path.join(PLUGINS_DIR, plugin, 'hooks', 'hooks.json');
@@ -34,30 +44,55 @@ const pluginDirs = fs.readdirSync(PLUGINS_DIR).filter(f => fs.statSync(path.join
             Object.keys(hooksSource).forEach(eventType => {
                 if (eventType === 'description') return;
                 
-                // Gemini only supports certain hook events
-                if (isGemini && !['SessionStart', 'Stop'].includes(eventType)) {
-                    // console.log(`  Skipping event ${eventType} for Gemini (unsupported).`);
-                    return;
+                let targetEvent = eventType;
+                if (isGemini) {
+                    targetEvent = GEMINI_HOOK_MAP[eventType];
+                    if (!targetEvent) return; // Skip hooks that don't map to Gemini
                 }
 
-                if (!settings.hooks[eventType]) settings.hooks[eventType] = [];
+                if (!settings.hooks[targetEvent]) settings.hooks[targetEvent] = [];
 
                 // Remove existing hooks from THIS plugin to avoid duplicates/stale commands
-                settings.hooks[eventType] = settings.hooks[eventType].filter(existing => {
+                settings.hooks[targetEvent] = settings.hooks[targetEvent].filter(existing => {
                     const str = JSON.stringify(existing);
                     return !str.includes(pluginRoot);
                 });
 
                 const hookGroups = Array.isArray(hooksSource[eventType]) ? hooksSource[eventType] : [];
                 hookGroups.forEach(hookGroup => {
-                    const processedHookGroup = JSON.parse(JSON.stringify(hookGroup).replace(/\$\{CLAUDE_PLUGIN_ROOT\}/g, pluginRoot));
+                    let raw = JSON.stringify(hookGroup);
+                    raw = raw.replace(/\$\{CLAUDE_PLUGIN_ROOT\}/g, pluginRoot);
                     
-                    settings.hooks[eventType].push(processedHookGroup);
-                    console.log(`  Synced ${eventType} hook group.`);
+                    // Specific fix for context-mode: use its own hooks/gemini-cli/ scripts for Gemini
+                    if (isGemini && plugin === 'context-mode') {
+                        raw = raw.replace(/\/hooks\/([a-z]+)\.mjs/g, (match, name) => {
+                           const geminiScript = path.join(pluginRoot, 'hooks', 'gemini-cli', `${name}.mjs`);
+                           if (fs.existsSync(geminiScript)) return `/hooks/gemini-cli/${name}.mjs`;
+                           return match;
+                        });
+                    }
+
+                    const processedHookGroup = JSON.parse(raw);
+                    
+                    settings.hooks[targetEvent].push(processedHookGroup);
+                    console.log(`  Synced ${targetEvent} hook group.`);
                 });
             });
         }
     });
+
+    // Final sanity check: if context-mode is present, call its internal upgrade to fix Node paths/permissions
+    const ctxModeRoot = path.join(PLUGINS_DIR, 'context-mode');
+    if (fs.existsSync(ctxModeRoot)) {
+        console.log("  Running context-mode upgrade for final calibration...");
+        try {
+            const { execSync } = require('child_process');
+            // Run upgrade non-interactively if possible (we patched cli.ts to be more robust)
+            execSync(`node "${path.join(ctxModeRoot, 'cli.bundle.mjs')}" upgrade`, { stdio: 'inherit' });
+        } catch (e) {
+            console.log("  Warning: context-mode upgrade failed, continuing...");
+        }
+    }
 
     fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
     console.log(`Done wiring hooks for ${target.name}.`);

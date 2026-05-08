@@ -3,6 +3,9 @@
     "hasSeenNudge": true,
     "enabled": true
   },
+  "extensions": {
+    "context-mode": {}
+  },
   "security": {
     "auth": {
       "selectedType": "oauth-personal"
@@ -35,7 +38,142 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/sessionstart.mjs\""
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/gemini-cli/sessionstart.mjs\""
+          }
+        ]
+      }
+    ],
+    "BeforeAgent": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/userpromptsubmit.mjs\""
+          }
+        ]
+      }
+    ],
+    "BeforeTool": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Grep",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_context-mode_context-mode__ctx_execute",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_context-mode_context-mode__ctx_execute_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/pretooluse.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/rtk-ai/hooks/claude/rtk-rewrite.sh\""
+          }
+        ]
+      }
+    ],
+    "AfterTool": [
+      {
+        "matcher": "EnterWorktree",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/code-review-graph/hooks/code-review-graph-hook.sh\" build >/dev/null 2>&1 &"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/code-review-graph/hooks/code-review-graph-hook.sh\" update --skip-flows",
+            "timeout": 30000
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Read|Write|Edit|NotebookEdit|Glob|Grep|TodoWrite|TaskCreate|TaskUpdate|EnterPlanMode|ExitPlanMode|Skill|Agent|AskUserQuestion|EnterWorktree|mcp__",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/posttooluse.mjs\""
+          }
+        ]
+      }
+    ],
+    "PreCompress": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/home/weverton/Documentos/Github/skills-agents-mcps/plugins/context-mode/hooks/precompact.mjs\""
           }
         ]
       }

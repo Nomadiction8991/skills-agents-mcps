@@ -725,8 +725,6 @@ async function upgrade() {
     
     if (newVersion === localVersion) {
       p.log.success(color.green("Already on latest") + ` — v${localVersion}`);
-      rmSync(tmpDir, { recursive: true, force: true });
-      return;
     } else {
       p.log.info(
         `Update available: ${color.yellow("v" + localVersion)} → ${color.green("v" + newVersion)}`,
@@ -734,72 +732,63 @@ async function upgrade() {
     }
 
     // Step 2: Install dependencies + build
-    s.start("Installing dependencies & building");
-    npmExecFile(["install", "--no-audit", "--no-fund"], {
-      cwd: srcDir,
-      stdio: "pipe",
-      timeout: 120000,
-    });
-    npmExecFile(["run", "build"], {
-      cwd: srcDir,
-      stdio: "pipe",
-      timeout: 60000,
-    });
-    s.stop("Built successfully");
+    if (newVersion !== localVersion) {
+      s.start("Installing dependencies & building");
+      npmExecFile(["install", "--no-audit", "--no-fund"], {
+        cwd: srcDir,
+        stdio: "pipe",
+        timeout: 120000,
+      });
+      npmExecFile(["run", "build"], {
+        cwd: srcDir,
+        stdio: "pipe",
+        timeout: 60000,
+      });
+      s.stop("Built successfully");
 
-    // Step 3: Update in-place
-    s.start("Updating files in-place");
+      // Step 3: Update in-place
+      s.start("Updating files in-place");
 
-    // Old version dirs are cleaned lazily by sessionstart.mjs (age-gated >1h)
-    // to avoid breaking active sessions that still reference them (#181).
+      const clonedPkg = JSON.parse(readFileSync(resolve(srcDir, "package.json"), "utf-8"));
+      const items = [
+        ...(clonedPkg.files || []),
+        "src", "package.json",
+      ];
+      for (const item of items) {
+        try {
+          rmSync(resolve(pluginRoot, item), { recursive: true, force: true });
+          cpSync(resolve(srcDir, item), resolve(pluginRoot, item), { recursive: true });
+        } catch { /* some files may not exist in source */ }
+      }
 
-    // Read files list from cloned repo's package.json so new directories
-    // (like insight/) are automatically included without chicken-and-egg issues
-    // where the old CLI doesn't know about new directories.
-    const clonedPkg = JSON.parse(readFileSync(resolve(srcDir, "package.json"), "utf-8"));
-    const items = [
-      ...(clonedPkg.files || []),
-      "src", "package.json",
-    ];
-    for (const item of items) {
-      try {
-        rmSync(resolve(pluginRoot, item), { recursive: true, force: true });
-        cpSync(resolve(srcDir, item), resolve(pluginRoot, item), { recursive: true });
-      } catch { /* some files may not exist in source */ }
-    }
-
-    // Write .mcp.json with CLAUDE_PLUGIN_ROOT placeholder (fixes #411).
-    // Absolute paths bake-in the current pluginRoot dir, which sessionstart.mjs
-    // (#181) deletes after upgrade — breaking MCP server resolution. The literal
-    // ${CLAUDE_PLUGIN_ROOT} placeholder is resolved by Claude at load-time and
-    // stays valid across version cleanups. Matches .claude-plugin/plugin.json.
-    const mcpConfig = {
-      mcpServers: {
-        "context-mode": {
-          command: "node",
-          args: ["${CLAUDE_PLUGIN_ROOT}/start.mjs"],
+      const mcpConfig = {
+        mcpServers: {
+          "context-mode": {
+            command: "node",
+            args: ["${CLAUDE_PLUGIN_ROOT}/start.mjs"],
+          },
         },
-      },
-    };
-    writeFileSync(
-      resolve(pluginRoot, ".mcp.json"),
-      JSON.stringify(mcpConfig, null, 2) + "\n",
-    );
+      };
+      writeFileSync(
+        resolve(pluginRoot, ".mcp.json"),
+        JSON.stringify(mcpConfig, null, 2) + "\n",
+      );
 
-    s.stop(color.green(`Updated in-place to v${newVersion}`));
+      s.stop(color.green(`Updated in-place to v${newVersion}`));
 
-    // Fix registry — adapter-aware
-    adapter.updatePluginRegistry(pluginRoot, newVersion);
-    p.log.info(color.dim("  Registry synced to " + pluginRoot));
+      // Fix registry — adapter-aware
+      adapter.updatePluginRegistry(pluginRoot, newVersion);
+      p.log.info(color.dim("  Registry synced to " + pluginRoot));
 
-    // Install production deps
-    s.start("Installing production dependencies");
-    npmExecFile(["install", "--production", "--no-audit", "--no-fund"], {
-      cwd: pluginRoot,
-      stdio: "pipe",
-      timeout: 60000,
-    });
-    s.stop("Dependencies ready");
+      // Install production deps
+      s.start("Installing production dependencies");
+      npmExecFile(["install", "--production", "--no-audit", "--no-fund"], {
+        cwd: pluginRoot,
+        stdio: "pipe",
+        timeout: 60000,
+      });
+      s.stop("Dependencies ready");
+    }
 
     if (detection.platform !== 'opencode' && detection.platform !== 'kilo') {
       // Rebuild native addons for current Node.js ABI (fixes #131)

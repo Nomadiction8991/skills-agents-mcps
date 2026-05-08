@@ -22,6 +22,23 @@ link() {
   echo "  ✓ $dst → $src"
 }
 
+CLEAN=0
+for arg in "$@"; do
+  case "$arg" in
+    --clean) CLEAN=1 ;;
+  esac
+done
+
+if [ $CLEAN -eq 1 ]; then
+  echo "=== Limpeza Profunda (--clean) ==="
+  echo "  → Removendo bancos de dados e logs..."
+  rm -rf "$HOME/.claude/context-mode" "$HOME/.gemini/context-mode"
+  rm -rf "$HOME/.claude/hooks" "$HOME/.gemini/hooks"
+  echo "  → Matando processos node pendentes (best effort)..."
+  pkill -f "context-mode" || true
+  echo ""
+fi
+
 echo "=== Detectando Ferramentas ==="
 [ $HAS_CLAUDE -eq 1 ] && echo "  [OK] Claude Code detectado" || echo "  [--] Claude Code não encontrado"
 [ $HAS_CODEX -eq 1 ] && echo "  [OK] Codex detectado" || echo "  [--] Codex não encontrado"
@@ -54,7 +71,7 @@ link_hooks() {
   local ia="$1"
   local dst_dir="$2"
   echo "Instalando hooks para $ia em $dst_dir..."
-  [ -L "$dst_dir" ] && rm -f "$dst_dir"
+  [ -d "$dst_dir" ] || [ -L "$dst_dir" ] && rm -rf "$dst_dir"
   mkdir -p "$dst_dir"
   for plugin_dir in "$REPO_ROOT/plugins"/*/; do
     [ -d "$plugin_dir/hooks" ] || continue
